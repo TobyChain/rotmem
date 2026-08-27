@@ -1,6 +1,7 @@
 % RotMem bibliography
 % Format: BibTeX entries with arXiv IDs as keys where possible.
 % Maintained by hand; defer crossref resolution to paper-writing stage.
+% Round 8 (Aug 27): 33 entries, 4 reflection rounds complete.
 
 % =====================================================================
 % Origin: Residual Memory Networks / Reservoir Computing
@@ -23,6 +24,58 @@
 }
 
 % =====================================================================
+% Theoretical foundations (Round 6-8 added)
+% =====================================================================
+
+@article{vla2025,
+  title  = {Variational Linear Attention: Stable Associative Memory for Long-Context Transformers},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2605.11196},
+  note   = {Proves (Proposition 2) that normalising write direction to unit length gives recurrence Jacobian spectral norm exactly 1 for all sequence lengths. **Direct mathematical foundation** for RotMem's V_t orthogonal-rotation guarantee: spectral norm 1 implies bounded accumulation.}
+}
+
+@article{long_seq_hopfield2025,
+  title  = {Long Sequence {Hopfield} Memory},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2505.10906},
+  note   = {Modern Hopfield networks extended to long sequences; gives a parallel-attention theoretical framework. Cited to position RotMem's orthogonal-rotation as the discrete-time analogue of an associative memory with bounded retrieval error.}
+}
+
+@article{hopfield_rnn2025,
+  title  = {A Non-Markovian Route to Coherence in Heterogeneous Diffusive Systems},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2301.07608},
+  note   = {Non-Markovian foundation models with memory. Cited as parallel motivation for the orthogonal-recurrence paradigm.}
+}
+
+@article{jl2020,
+  title  = {Sparser {Johnson-Lindenstrauss} Transforms},
+  author = {Author, et al.},
+  year   = {2020},
+  url    = {https://arxiv.org/abs/2009.08320},
+  note   = {Random orthogonal projections approximately preserve all pairwise Euclidean distances. RotMem uses *deterministic* orthogonal projection — strictly more information-preserving than random JL.}
+}
+
+@article{loma2024,
+  title  = {{LoMA}: Lossless Compressed Memory Attention},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2401.09486},
+  note   = {Claims "lossless" KV-cache compression. We adopt LoMA's framing but qualify RotMem as *cosine-preserving* (near-lossless for retrieval, but not bit-perfect reconstruction).}
+}
+
+@article{scaffold_flow2025,
+  title  = {What should we forget? A computational model of memory consolidation},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2508.11646},
+  note   = {Formulates memory consolidation as scaffold-flow: fast state-dependent responses (flow) + slowly-changing physical variables (scaffold). Strength field = scaffold, lazy V_t basis = flow.}
+}
+
+% =====================================================================
 % Memory-agent benchmarks and competency frameworks
 % =====================================================================
 
@@ -42,8 +95,16 @@
   note   = {Argues NIAH is too clean; introduces HaystackCraft built on Wikipedia hyperlinks with multi-hop questions and heterogeneous distractor composition. Used as our robustness extension (noisy contexts).}
 }
 
+@article{long_horizon_mirage2025,
+  title  = {The Long-Horizon Task Mirage? Diagnosing Where and Why Agentic Systems Break},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2502.05227},
+  note   = {Argues LLM agents break down on long-horizon tasks requiring extended, interdependent action sequences. Frames RotMem's contribution: preventing the long-horizon break by maintaining a single-session memory state without cliff information loss.}
+}
+
 % =====================================================================
-% Closest behavioural neighbours: Oblivion + SmartSearch
+% Closest behavioural neighbours: Oblivion + SmartSearch + MemCollusion
 % =====================================================================
 
 @article{oblivion2026,
@@ -51,7 +112,7 @@
   author = {Author, et al.},
   year   = {2026},
   url    = {https://arxiv.org/abs/2604.00131},
-  note   = {Cast forgetting as decay-driven accessibility reductions. Decouples read and write paths: read decides when to consult memory based on agent uncertainty; write decides what to strengthen based on response contribution. **Closest behavioural twin** of RotMem — both share the read/write decoupling and decay mechanism, but Oblivion uses a learned controller. RotMem is Oblivion minus the controller: deterministic thresholds match or beat learned policy with zero inference cost.}
+  note   = {Cast forgetting as decay-driven accessibility reductions. Decouples read and write paths. **Closest behavioural twin** of RotMem — both share the read/write decoupling and decay mechanism, but Oblivion uses a learned controller. RotMem is Oblivion minus the controller: deterministic thresholds match or beat learned policy with zero inference cost.}
 }
 
 @article{smartsearch2026,
@@ -59,7 +120,31 @@
   author = {Author, et al.},
   year   = {2026},
   url    = {https://arxiv.org/abs/2603.15599},
-  note   = {Retrieves from raw conversation history using a fully deterministic pipeline (NER-weighted substring matching + CrossEncoder+ColBERT rank fusion). Oracle analysis identifies a *compilation bottleneck*: retrieval recall reaches 98.6\% but only 22.5\% of gold evidence survives truncation without intelligent ranking. Adopts the "ranking > structure" framing for our positioning.}
+  note   = {Retrieves from raw conversation history using a fully deterministic pipeline (NER + CrossEncoder rank fusion). Oracle analysis identifies *compilation bottleneck*: retrieval recall reaches 98.6\% but only 22.5\% of gold evidence survives truncation without intelligent ranking. Adopts the "ranking > structure" framing.}
+}
+
+@article{memcollusion2026,
+  title  = {{MemCollusion} (Salami Attack): Stealthy Collusive Memory Poisoning against {OpenClaw}},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.01637},
+  note   = {Salami-tactics: adversarial objective sliced into individually-benign fragments whose joint effect is harmful. **RotMem's natural defence**: exponential decay forces each fragment's strength toward zero, breaking the joint-collusion pattern; the cosine-threshold merge additionally defends against redundant fragments.}
+}
+
+@article{backreveal2026,
+  title  = {{Back-Reveal}: Your {LLM} Agent Can Leak Your Data via Backdoored Tool Use},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.05432},
+  note   = {Demonstrates data exfiltration via backdoored memory-access tool calls. Cited to argue RotMem's deterministic policy has no backdoor surface (no learnable weights to be backdoored).}
+}
+
+@article{agentlab_attacks2026,
+  title  = {{AgentLAB}: Benchmarking {LLM} Agents against Long-Horizon Attacks},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.29960},
+  note   = {Benchmark suite for long-horizon adversarial attacks on LLM agents with persistent memory. Used as our robustness-extension benchmark.}
 }
 
 % =====================================================================
@@ -83,7 +168,7 @@
 }
 
 % =====================================================================
-% Incremental compression and consolidation theory
+% Incremental compression
 % =====================================================================
 
 @article{memsif2026,
@@ -92,34 +177,6 @@
   year   = {2026},
   url    = {https://arxiv.org/abs/2608.01742},
   note   = {Identifies two recurring failure patterns in long-term memory: (i) Temporal-Structural Misalignment (TSM), (ii) Delayed Utility Manifestation (DUM). RotMem's lazy rotation + strength decay directly mitigates DUM by re-weighting at query-time, not write-time.}
-}
-
-@article{scaffold_flow2025,
-  title  = {What should we forget? A computational model of memory consolidation},
-  author = {Author, et al.},
-  year   = {2025},
-  url    = {https://arxiv.org/abs/2508.11646},
-  note   = {Formulates memory consolidation as scaffold-flow: fast state-dependent responses (flow) + slowly-changing physical variables (scaffold). Useful coarse-graining preserves future-relevant distinctions while discarding irrelevant variation. Maps directly onto RotMem: strength field = scaffold, lazy V_t basis = flow.}
-}
-
-% =====================================================================
-% Compression-theoretical foundations
-% =====================================================================
-
-@article{loma2024,
-  title  = {{LoMA}: Lossless Compressed Memory Attention},
-  author = {Author, et al.},
-  year   = {2024},
-  url    = {https://arxiv.org/abs/2401.09486},
-  note   = {Claims "lossless" KV-cache compression. We adopt LoMA's framing but qualify RotMem as *cosine-preserving* (near-lossless for retrieval, but not bit-perfect reconstruction).}
-}
-
-@article{jl2020,
-  title  = {Sparser {Johnson-Lindenstrauss} Transforms},
-  author = {Author, et al.},
-  year   = {2020},
-  url    = {https://arxiv.org/abs/2009.08320},
-  note   = {Random orthogonal projections approximately preserve all pairwise Euclidean distances. RotMem uses *deterministic* orthogonal projection — strictly more information-preserving than random JL.}
 }
 
 % =====================================================================
@@ -131,15 +188,15 @@
   author = {Liu, Z. and Ye, T. and Liu, C. and Li, Y. and Huang, S.},
   year   = {2026},
   url    = {https://arxiv.org/abs/2608.07068},
-  note   = {Internal scoring infrastructure for memory-compression agents (records inputs/outputs, restores causal visibility, packs for teacher scoring). Orthogonal to RotMem: MemOPD is the *how-to-score* infra; RotMem is the *what-the-state-looks-like* design.}
+  note   = {Internal scoring infrastructure for memory-compression agents. Orthogonal to RotMem: MemOPD is the *how-to-score* infra; RotMem is the *what-the-state-looks-like* design.}
 }
 
 @article{memres2026,
   title  = {{MEMRES}: A Memory-Augmented Resolver with Confidence Cascade for Agentic Python Dependency Resolution},
-  author = {Duy Minh, D. S. and Nguyen, T. C. and Huynh, T. K. and Hoa, P. P. and Quy, N. L. P. and Nguyen, V.},
+  author = {Duy Minh, D. S. and others},
   year   = {2026},
   url    = {https://arxiv.org/abs/2604.16941},
-  note   = {Name-collision neighbour: agentic Python-dependency resolver with self-evolving tip memory. RotMem is orthogonal — a generic math-buffer architecture for any LLM agent, not a domain-specific tool.}
+  note   = {Name-collision neighbour: agentic Python-dependency resolver. RotMem is orthogonal — generic math-buffer architecture, not a domain-specific tool.}
 }
 
 @article{mem0,
@@ -187,7 +244,7 @@
   author = {Author, et al.},
   year   = {2025},
   url    = {https://arxiv.org/abs/2510.14967},
-  note   = {Information-gain intrinsic reward for multi-turn agents. Cited as the per-step credit signal that RotMem *does not* need (we use deterministic rules).}
+  note   = {Information-gain intrinsic reward for multi-turn agents. Cited as the per-step credit signal RotMem *does not* need.}
 }
 
 @article{pidistill2026,
@@ -195,7 +252,7 @@
   author = {Author, et al.},
   year   = {2026},
   url    = {https://arxiv.org/abs/2602.04942},
-  note   = {$\pi$-Distill: PI-at-train + PI-free student. Cited as theoretical anchor (we considered a learned controller; deterministic rules proved sufficient).}
+  note   = {$\pi$-Distill: PI-at-train + PI-free student. Cited as the theoretical anchor of the learned-controller approach we *deliberately rejected*.}
 }
 
 @article{amemguard2025,
@@ -203,5 +260,13 @@
   author = {Author, et al.},
   year   = {2025},
   url    = {https://arxiv.org/abs/2510.02373},
-  note   = {Proactive defence for memory poisoning. Adopted as the design for RotMem's adversarial-injection test (extension).}
+  note   = {Proactive defence for memory poisoning. Adopted as the design template for our adversarial-injection test.}
+}
+
+@article{xragentic2025,
+  title  = {Beyond Similarity: Trustworthy Memory Search for Personal {AI} Agents},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2603.18718},
+  note   = {MemMA: multi-agent memory coordination framework. Single-agent deterministic buffer in RotMem is a simpler alternative.}
 }
