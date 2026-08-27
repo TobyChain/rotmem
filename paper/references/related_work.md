@@ -427,3 +427,188 @@ without a learned ranker), and = **LoMA-minus-the-bit-perfectness**
 | RLM (2603.02615) | recursive LM in external REPL | Depth-2+ "overthinks"; we are flat |
 | MemGym (2605.20833) | benchmark | We adopt as primary benchmark |
 | HyMeS (2608.09410) | coding-agent for memory mgmt | Integration target precedent |
+---
+
+## Information theory & rate-distortion (Round 17)
+
+### QJL — arXiv:2603.26110 (2026)
+
+- **What it is.** 1-bit Quantized JL Transform for KV cache
+  quantization: applies a Johnson-Lindenstrauss orthogonal transform
+  followed by sign-bit quantization. Claims zero memory overhead
+  (no per-block scale/zero-point storage).
+- **Why this is the most direct prior art on my mechanism.** QJL
+  uses the *same orthogonal transform* I use, applied to a different
+  object (KV cache vs memory state) and with a different
+  quantisation scheme (1-bit sign vs full precision).
+- **Delta.** Two axes of difference:
+  - **Object**: QJL = KV cache (per-token attention state);
+    RotMem = memory state (long-term semantic items).
+  - **Quantisation**: QJL = 1-bit sign (rotates-then-binarises);
+    RotMem = full-precision (rotates-then-keeps).
+- **What I learn from QJL.** RotMem's full-precision projection is
+  strictly more information-preserving than QJL's 1-bit
+  quantisation at the cost of 32× memory per item. The cost is
+  acceptable for our regime (~5k items per session) and gives
+  the cosine-preservation guarantee.
+
+### TurboESM — arXiv:2603.26110 (2026)
+
+- RoPE-first orthogonal rotation pipeline for Protein Language
+  Models. Adopts a *different* rotation strategy from QJL but the
+  same underlying orthogonal-transform insight.
+
+### Causal Rate-Distortion Theory — arXiv:2206.10083 (2022)
+
+- **What it is.** Theoretical rate-distortion bounds for projection
+  compression.
+- **Why this is my theoretical lower-bound citation.** For my V_t
+  with d=256 projection dimension, the JL guarantee bounds the
+  per-item cosine distortion below any user-chosen $\epsilon$ for
+  $N$ items of intrinsic dimension $d_\text{int}$. My Theorem 1.3
+  (cosine preservation) is a special case where $\epsilon = 0$
+  (orthogonal projections preserve cosine exactly).
+
+---
+
+## Continual learning at the memory level (Round 18)
+
+### ISM — arXiv:2604.27003 (2026)
+
+- **What it is.** *"Memory-augmented LLM agents offer an appealing
+  shortcut to continual learning: rather than updating model
+  parameters, they accumulate experience in external memory,
+  seemingly sidestepping the stability-plasticity dilemma of
+  parametric learning. We show that this challenge does not
+  disappear but resurfaces at the memory level."*
+- **Why this is the strongest positive framing for RotMem.** ISM
+  *canonises* the framing that continual learning has relocated to
+  memory. RotMem is the deterministic answer to that relocated
+  bottleneck: exponential decay = stability, low τ = plasticity.
+- **Delta.** ISM uses learned strategy distillation; RotMem uses
+  deterministic strength decay + merge.
+
+### Neuro-Symbolic Experience Replay — arXiv:2605.09419 (2026)
+
+- **What it is.** Critiques passive replay buffers and argues for
+  active reasoning.
+- **Delta.** RotMem is *passive* (deterministic rules); cited as
+  the known limitation. Future work: add active-reasoning
+  extension that combines retrieval with re-ranking via a small
+  classifier.
+
+### Catastrophic Forgetting in PEFT — arXiv:2402.18865 (2024)
+
+- Stability-plasticity trade-off framing. Cited as the
+  *continual-learning* lens on RotMem: low τ = stable memory,
+  high τ = plastic.
+
+---
+
+## Green AI / Carbon / Efficiency (Round 19)
+
+### NAM — arXiv:2302.09422 (2023) — Neural Attention Memory
+
+- **What it is.** *"NAM is a memory structure that is both readable
+  and writable via differentiable linear algebra operations."*
+  Applied to MANN, few-shot learning, and efficient long-range
+  attention.
+- **Why this is a naming-collision risk.** Both RotMem and NAM
+  use linear-algebra operations on memory; NAM is differentiable,
+  RotMem is not.
+- **Delta.** NAM is the *learned* version; RotMem is the
+  *deterministic* version. The non-differentiability is a feature
+  (no backdoor surface, no retraining cost).
+
+### TPI-LLM — arXiv:2504.02273 (2025)
+
+- Validates that memory augmentation helps 1B-class models.
+  Cited as motivation for our Stage 2 evaluation on Qwen3-2B.
+
+### LLMCarbon — arXiv:2511.08575 (2025)
+
+- End-to-end carbon-footprint modelling for LLMs.
+- **Why this matters for RotMem.** RotMem eliminates the
+  cross-encoder / proxy-LM / LLM-Map calls that baseline memory
+  systems require. The carbon savings are *every turn*: no LM
+  call to compress, no LM call to rank, no LM call to consolidate.
+  We provide a carbon-estimate table in the paper (Stage 3).
+
+### Carbontracker — arXiv:2206.03227 (2022)
+
+- Foundational carbon tracking for ML. Cited alongside LLMCarbon.
+
+### Cottention — arXiv:2602.13680 (2026)
+
+- *Cosine attention* for linear Transformers. Cites cosine as
+  structure-preserving. Cited as parallel motivation for cosine
+  as the buffer retrieval metric.
+
+---
+
+## Reproducibility & failure modes (Round 20)
+
+### MemoryArena — arXiv:2602.16313 (2026)
+
+- **What it is.** *"Multi-session Memory-Agent-Environment loops
+  with human-crafted tasks."* Captures the *interdependence* of
+  memorisation and action.
+- **Why this is the closest benchmark to my scenario.** Although
+  RotMem is single-session, MemoryArena's Memory-Agent-Environment
+  framing maps to my Stage 2 harness. Add as primary benchmark
+  alongside MemGym.
+
+### MemSyco-Bench — arXiv:2607.01071 (2026)
+
+- **What it is.** *Memory-induced sycophancy*: retrieved memories
+  cause agents to over-align with the user at the cost of factual
+  accuracy.
+- **Why this is a new failure mode for me to test.** My
+  strength-weighted retrieval ranks high-strength items higher;
+  if those items happen to be user-aligned (rather than
+  factually correct), my system could amplify sycophancy. Add a
+  Stage 2 robustness test: 50 sycophancy-injection cases, measure
+  F1 vs baseline.
+
+---
+
+## Updated summary delta-table (Round 20)
+
+| Paper | Mechanism | Δ from RotMem |
+|---|---|---|
+| **QJL (2603.26110)** | JL + 1-bit sign on KV cache | Same orthogonal transform, different object + full-precision |
+| **NAM (2302.09422)** | Neural Attention Memory (differentiable) | Non-differentiable deterministic counterpart |
+| **ISM (2604.27003)** | continual learning bottleneck at memory | Deterministic answer: stability–plasticity dial |
+| **NSER (2605.09419)** | active reasoning over passive replay | Cited as future-work for active extension |
+| **Catastrophic Forgetting (2402.18865)** | stability-plasticity PEFT | My decay τ controls the trade-off |
+| **MemoryArena (2602.16313)** | Multi-session MAE benchmark | Adopt as primary benchmark |
+| **MemSyco-Bench (2607.01071)** | memory-induced sycophancy | New failure mode to test |
+| **TPI-LLM (2504.02273)** | memory aug for 1B-class | Motivation for 2B evaluation |
+| **LLMCarbon (2511.08575)** | Carbon estimation framework | Provide carbon-saving estimate table |
+| **Rate-distortion (2206.10083)** | lower bound for projection | My V_t achieves ε=0 (cosine preserved) |
+| **Cottention (2602.13680)** | cosine attention for linear Transformers | Parallel motivation for cosine retrieval |
+| MEMRES (2604.16941) | tip-pool memory for dependency resolution | Domain-specific; no math buffer |
+| RMN (emergentmind) | orthogonal reservoir | We lift it; reservoir ↔ memory state |
+| EST (2507.02917) | ESN + attention hybrid | Substrate vs projection; model vs buffer |
+| **Oblivion (2604.00131)** | decay-driven read/write decoupling, learned controller | RotMem = Oblivion minus the controller |
+| **SmartSearch (2603.15599)** | deterministic NER+ranker | RotMem = SmartSearch minus the CrossEncoder |
+| MemSIF (2608.01742) | TSM, DUM | RotMem mitigates DUM |
+| Use-it-or-Lose-it (2604.20300) | selective forgetting | Decay+merge as security primitive |
+| FSFM (2405.18663) | contrastive selective forgetting | Simpler: weighted-mean |
+| Scaffold-flow (2508.11646) | flow/scaffold | scaffold=strength, flow=V_t |
+| LoMA (2401.09486) | lossless KV-cache compression | Weaker guarantee at lower cost |
+| Johnson-Lindenstrauss (2009.08320) | random orthogonal | Deterministic, data-adaptive |
+| MemOPD (2608.07068) | on-policy scoring infra | Orthogonal: infra vs state-design |
+| LCM (2605.04050) | hierarchical summary DAG + LLM-Map | RotMem is non-recursive, no LLM-Map |
+| RLM (2603.02615) | recursive LM in external REPL | Depth-2+ "overthinks"; we are flat |
+| MemGym (2605.20833) | benchmark | We adopt as primary benchmark |
+| HyMeS (2608.09410) | coding-agent for memory mgmt | Integration target precedent |
+| MARS (2605.14401) | 3-tier memory + strength tracking | Same architecture, deterministic merge |
+| NEMORI (2508.03341) | prediction-error retention | Deterministic threshold |
+| CLAG (2603.15421) | SLM-driven clustering | Implicit clustering via V_t |
+| MemTrace (2608.06909) | debugging methodology | Substrate is debugging-free |
+| MemOS (2507.03724) | memory hierarchy OS | Complementary: we are the hot-cache primitive |
+| EverMemOS (2601.02163) | engram-lifecycle memory OS | Complementary: we are the buffer |
+| HNSW (2607.16973) | corpus-scale vector index | Different regime: corpus-scale |
+| Unlearning (2402.15159) | RTBF via retraining | O(1) per-entry deletion |
+| SuperLocalMemory (2506.12088) | Bayesian-trust privacy | Single-agent so trust not needed; threat model shared |

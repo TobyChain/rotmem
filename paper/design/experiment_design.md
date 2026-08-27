@@ -129,8 +129,22 @@ learning, long-range, selective forgetting).
 From arXiv:2606.30560 — 4,300 Claude Code + Codex sessions, 350k LLM
 steps, 430k tool calls. We use the **workload distribution** (turn
 count distribution, tool-call distribution) to inform our synthetic
-task generation, ensuring the benchmark reflects realistic coding-agent
 patterns.
+
+### Quaternary benchmark: MemoryArena (arXiv:2602.16313)
+
+Multi-session Memory-Agent-Environment loops with human-crafted
+tasks. Adopted as the second primary benchmark for Stage 2;
+provides the *human-craft* test scenario that complements
+MemGym's synthetic tasks.
+
+### MemSyco-Bench (arXiv:2607.01071) — sycophancy robustness test
+
+Robustness test (50 sycophancy-injection cases): measure whether
+high-strength retrievals bias the LLM toward user-aligned (rather
+than factually correct) answers. Predicted: RotMem's deterministic
+strength weighting amplifies user-aligned items if they have high
+retrieval history; mitigations explored in Stage 3.
 
 ---
 

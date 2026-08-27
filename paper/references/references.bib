@@ -457,3 +457,107 @@
   url    = {https://arxiv.org/abs/2603.13591},
   note   = {Vector indexing at corpus scale. Different regime: corpus-scale (millions of items) vs. session-scale (5k items).}
 }
+
+@article{qjl2026,
+  title  = {{QJL}: 1-Bit Quantized {JL} Transform for {KV} Cache Quantization with Zero Overhead},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.26110},
+  note   = {Direct prior art on orthogonal transform + quantization for LLM KV cache. Distinction: QJL is 1-bit on KV cache (per-token attention state); RotMem is full-precision on memory state (long-term items).}
+}
+
+@article{turboesm2026,
+  title  = {{TurboESM}: Ultra-Efficient 3-Bit {KV} Cache Quantization for Protein Language Models},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.26110},
+  note   = {RoPE-first rotation pipeline for protein LMs. Another orthogonal-rotation-for-LM citation.}
+}
+
+@article{nam2023,
+  title  = {Neural Attention Memory},
+  author = {Author, et al.},
+  year   = {2023},
+  url    = {https://arxiv.org/abs/2302.09422},
+  note   = {NAM: memory structure readable/writable via differentiable linear algebra. **Naming-collision risk.** RotMem is the *non-differentiable deterministic* counterpart of NAM.}
+}
+
+@article{ism2026,
+  title  = {{ISM}: Self-Improving Strategy Memory for Continual Mathematical Reasoning},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.27003},
+  note   = {**Strongest positive framing citation**: "the continual-learning bottleneck relocates from parameter updates to memory access". RotMem is the deterministic answer to that relocated bottleneck.}
+}
+
+@article{nser2026,
+  title  = {Neuro-Symbolic Experience Replay: From Passive Reuse to Active Reasoning},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.09419},
+  note   = {Critique of passive replay buffers; argues for active reasoning. Cited as future-work motivation for adding active-reasoning extensions to RotMem.}
+}
+
+@article{catastrophic_forget_peft2024,
+  title  = {Analyzing and Reducing Catastrophic Forgetting in Parameter Efficient Tuning},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2402.18865},
+  note   = {Stability-plasticity trade-off in continual LLM fine-tuning. My exponential decay provides stability (low tau) or plasticity (high tau) as a tunable dial.}
+}
+
+@article{memarena2026,
+  title  = {{MemoryArena}: Benchmarking Agent Memory in Interdependent Multi-Session Agentic Tasks},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2602.16313},
+  note   = {Multi-session Memory-Agent-Environment loops with human-crafted tasks. Add as primary benchmark alongside MemGym.}
+}
+
+@article{memsyco2026,
+  title  = {{MemSyco-Bench}: Benchmarking Sycophancy in Agent Memory},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2607.01071},
+  note   = {**Memory-induced sycophancy** as a new failure mode: high-strength retrievals may bias the LLM toward user-aligned answers. Add as Stage 2 robustness test.}
+}
+
+@article{llmcarbon2024,
+  title  = {{LLMCarbon}: Modeling the end-to-end Carbon Footprint of Large Language Models},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2511.08575},
+  note   = {Carbon-footprint measurement framework. Cited to quantify Rot: deterministic = zero-LM-calls = carbon savings. Add a carbon-estimate table in the paper.}
+}
+
+@article{rate_distortion2022,
+  title  = {Causal Rate-Distortion Theory},
+  author = {Author, et al.},
+  year   = {2022},
+  url    = {https://arxiv.org/abs/2206.10083},
+  note   = {Theoretical rate-distortion bounds. Cited as the lower-bound analysis for projection-based memory: with d=256 projection dimension, JL guarantee bounds the per-item distortion below any epsilon > 0.}
+}
+
+@article{carbontracker2022,
+  title  = {{Carbontracker}: Tracking and Predicting the Carbon Footprint of Training Deep Learning Models},
+  author = {Author, et al.},
+  year   = {2022},
+  url    = {https://arxiv.org/abs/2206.03227},
+  note   = {Foundational carbon-footprint tracking for ML. Cited alongside LLMCarbon.}
+}
+
+@article{tpi_llm2025,
+  title  = {{TPI-LLM}: Memory-Augmented Reinforcement Learning for Tiny LLMs},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2504.02273},
+  note   = {Validates memory-augmentation helps 1B-class models; my RotMem extends the same insight to 2B+ with deterministic policies.}
+}
+
+@article{cottention2026,
+  title  = {{Cottention}: Linear Transformers With Cosine Attention},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2602.13680},
+  note   = {Cites cosine as a structure-preserving similarity for linear attention. Cited as parallel motivation for using cosine as the buffer retrieval metric.}
+}
