@@ -4,11 +4,23 @@
 
 **Date.** 2026-08-27
 
-**Status.** Round 5 (post 4 reflection rounds). Positioning locked.
+**Status.** Round 12 (post 8 reflection rounds; final iteration before paper-writing).
 
-### Positioning sentence
+### Updated positioning sentence (Round 12)
 
-**RotMem = Oblivion-minus-the-controller** (arXiv:2604.00131) **= SmartSearch-minus-the-CrossEncoder** (arXiv:2603.15599) **= LoMA-minus-the-bit-perfectness** (arXiv:2401.09486). All three of those papers ask "do we really need a learned component?"; RotMem answers the next question: "do we need *any* learned component, or are deterministic information-theoretic priors enough?"
+**RotMem sits at the intersection of three design axes that no prior work covers simultaneously:**
+
+1. **Deterministic vs learned**: RotMem = **Oblivion-minus-the-controller** (arXiv:2604.00131) = **SmartSearch-minus-the-CrossEncoder** (arXiv:2603.15599) = **LCM-minus-the-LLM-Map** (arXiv:2605.04050) = **MemSifter-minus-the-proxy-LM** (arXiv:2603.03379). The consistent thesis: *all four prior works require a learned component; RotMem replaces it with deterministic information-theoretic priors.*
+2. **Flat vs recursive**: RotMem is **non-recursive**; LCM (arXiv:2605.04050) and RLM (arXiv:2603.02615) are recursive. Recursion depth 2+ "overthinks" (2603.02615); flat is better at our scale.
+3. **Cosine-preserving vs summary**: RotMem preserves **every item's cosine identity** via lazy orthogonal projection; LCM uses lossy hierarchical summary DAG; RLM uses plain-text summaries; MemOPD compresses inputs/outputs. The cosine-preserving axis is *strictly more information-preserving* than any summary-based mechanism at fixed memory budget.
+
+### Three-axis positioning table (Round 12)
+
+| Axis | RotMem | Closest competitor | Δ |
+|---|---|---|---|
+| Learned vs deterministic | Deterministic | LCM (deterministic but uses LLM-Map); Oblivion (LLM controller); SmartSearch (CrossEncoder); MemSifter (proxy LM) | No second LM, zero gradients |
+| Recursive vs flat | Flat single-session buffer | LCM (hierarchical summary DAG); RLM (recursive); MemGym (use as benchmark, not competitor) | One bounded buffer, no recursion depth |
+| Cosine-preserving vs summary | Cosine-preserving (lazy V_t) | LCM (lossy summary); MemOPD (lossy input compression); Mem0 (extractive facts) | No summary ever; identity retained |
 
 ### Map of competencies (from LoCoBench-Agent arXiv:2507.05257)
 

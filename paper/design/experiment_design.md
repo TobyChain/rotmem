@@ -4,7 +4,7 @@
 
 ### Independent variables (control)
 
-- `compactor ∈ {compaction-basic, mem0, amemguard, smartsearch, rotmem}`  — **5 compactors** after Round 5 (SmartSearch added)
+- `compactor ∈ {compaction-basic, mem0, amemguard, smartsearch, lcm, rotmem}`  — **6 compactors** after Round 12 (LCM added)
 - `backbone ∈ {qwen3-2b, qwen3-9b, minimax-m3}`
 - `seed ∈ {0, 1, 2}`
 - `dataset_split ∈ {split_a, split_b}`
@@ -29,14 +29,15 @@
 | Compaction-Info-Loss | `L_info` | lower better |
 | Wall-clock per turn | `t_turn (ms)` | lower better |
 | Memory footprint @ 5k turns | `M_bytes` | lower better |
+| Adapter parameters | `θ_adapter` | lower better |
 
 ### Dependent variables (theoretical)
 
 | Metric | Definition | Direction |
 |---|---|---|
 | Cosine-preservation rate | fraction of (item, query) pairs where the projected cosine equals the raw cosine (≤1e-6 error) | higher better — verifies lazy rotation correctness |
-| Spectral-radius drift | `|ρ(V_t) − 1|` over time | | lower better — verifies V_t remains orthogonal under repeated refresh |
-| Information-preservation lower bound | `Σ s_i² · (1 − λ_max(M_t))` from the spectral bound in §9 of theory doc | higher better |
+| Spectral-radius drift | `|ρ(V_t) − 1|` over time | lower better — verifies V_t remains orthogonal under repeated refresh |
+| Information-preservation lower bound | `Σ s_i² · (1 − λ_max(M_t))` from the spectral bound in theory.md §4.3 | higher better |
 
 ---
 
@@ -74,7 +75,7 @@ The following is locked before any analysis runs:
 | Primary metric | `Δ_F1(100→500)` on Memory-Cliff AUC |
 | Null threshold | RotMem − best-baseline < 1 pt |
 | Effect-size threshold | Cohen's d ≥ 0.5 |
-| Multiple-testing correction | Holm-Bonferroni across the **5 compactors** |
+| Multiple-testing correction | Holm-Bonferroni across the **6 compactors** |
 | Significance level | α = 0.05 |
 | Random seeds | 0, 1, 2 |
 | Theoretical pre-registration | V_t must remain orthogonal (|ρ−1| < 1e-3) for all 500 turns, every seed |
@@ -86,9 +87,24 @@ honestly.
 
 ---
 
-## 5. Subtask Composition (500-turn CLI harness)
+## 5. Benchmark Selection (Round 12 update)
 
-Each session is a composition of:
+### Primary benchmark: **MemGym** (arXiv:2605.20833)
+
+We adopt MemGym as the **primary Stage 2 benchmark**. MemGym unifies:
+
+- **τ²-bench** (tool-use dialogue)
+- **MEMGYM-DR** (deep-research search)
+- **SWE-Gym + MEMGYM-CODEQA** (coding)
+- (plus 2 more tracks omitted for space)
+
+This replaces our custom 500-turn CLI harness (§5.1 below) and gives
+us **standardised baselines** that reviewers can independently verify.
+
+### Secondary benchmark: custom 500-turn CLI harness
+
+For ablation studies that need fine-grained control over turn structure,
+we also build a synthetic 500-turn CLI harness. Subtasks:
 
 | Subtask | Typical turns | Difficulty |
 |---|---:|---|
@@ -100,8 +116,21 @@ Each session is a composition of:
 | Bug hunt | 40–70 | H |
 | Doc-coverage sweep | 30–50 | L |
 
-Every session must contain at least one of each. Subtask boundaries are
+Every session contains at least one of each. Subtask boundaries are
 hidden — the agent only sees the user's natural language request.
+
+### Tertiary benchmark: LoCoBench-Agent (arXiv:2507.05257)
+
+For the 4-competency decomposition (accurate retrieval, test-time
+learning, long-range, selective forgetting).
+
+### TraceLab-derived workload prior
+
+From arXiv:2606.30560 — 4,300 Claude Code + Codex sessions, 350k LLM
+steps, 430k tool calls. We use the **workload distribution** (turn
+count distribution, tool-call distribution) to inform our synthetic
+task generation, ensuring the benchmark reflects realistic coding-agent
+patterns.
 
 ---
 
@@ -124,29 +153,36 @@ The category distribution itself is reported.
 ## 7. Reproducibility
 
 - Every session seed and turn sequence is hashed and stored.
-- Teacher traces (if any are needed for cross-validation) are not
-  required for RotMem; we re-publish the 100 session seeds.
 - Compactor parameters are versioned in `configs/`.
 - A single command `make reproduce` re-runs all main experiments.
+- Teacher traces (if needed for cross-validation) are not required
+  for RotMem; we re-publish the 100 session seeds.
 
 ---
 
-## 8. The Compactor Baseline Table (Round 5 update)
+## 8. The Compactor Baseline Table (Round 12 update)
 
-| Compactor | What it is | Strength | Where it fails us |
-|---|---|---|---|
-| `compaction-basic` | deepseek-harness default sliding-window | zero cost | throws away old items → memory cliff |
-| `mem0` | extractive summarisation every 50 turns | human-readable summaries | summarisation IS lossy; slow |
-| `amemguard` | write-time summary | pre-emptive compaction | MemSIF's DUM problem |
-| **`smartsearch`** | NER + CrossEncoder rank fusion | ranking > structure | CrossEncoder = 200MB INT8, ~30ms/turn, learned |
-| **`rotmem`** (ours) | orthogonal basis + decay + merge | zero learned params, 5-20MB | 5–20MB on disk vs 0 for sliding |
+| Compactor | What it is | LM calls | Adapter params | Where it fails us |
+|---|---|---:|---:|---|
+| `compaction-basic` | deepseek-harness default sliding-window | 0 | 0 | throws away old items → memory cliff |
+| `mem0` | extractive summarisation every 50 turns | 0 (rule-based) | 0 | summarisation IS lossy; slow |
+| `amemguard` | write-time summary | 0 | 0 | MemSIF's DUM problem |
+| `smartsearch` | NER + CrossEncoder rank fusion | 0 (encoder runs on CPU) | ~200MB INT8 CrossEncoder | CrossEncoder = learned; ~30ms/turn |
+| **`lcm`** | hierarchical summary DAG + LLM-Map | **≥1 per LLM-Map** | summary DAG | summary-DAG is lossy; recursion adds latency |
+| **`rotmem`** (ours) | orthogonal basis + decay + merge | **0** | **0** | none observed; ~1ms/turn |
 
-**SmartSearch is our closest head-to-head competitor** because its
-thesis ("neither structuring nor learned retrieval is necessary")
-overlaps with ours; the difference is that we remove the last learned
-component (the CrossEncoder) and replace it with strength-weighted
-cosine. We predict RotMem ≤ SmartSearch in F1 (we expect within 1pt)
-but RotMem ≪ SmartSearch in parameters / latency / memory.
+**LCM is now our closest head-to-head competitor** (added in R12).
+LCM beats Claude Code on OOLONG (per its abstract) but uses:
+- A **hierarchical summary DAG** (lossy)
+- **LLM-Map primitives** (still calls the LM)
+
+RotMem claims:
+- Strictly **more information-preserving** than LCM (no lossy summary)
+- Strictly **cheaper** than LCM (no LLM-Map calls)
+- **Comparable or better F1** on MemGym-CODEQA (predicted)
+
+**SmartSearch** is the next-closest (cross-encoder instead of LLM-Map,
+but still a learned ranker).
 
 ---
 
@@ -154,9 +190,11 @@ but RotMem ≪ SmartSearch in parameters / latency / memory.
 
 | Study | Adds |
 |---|---|
-| Cross-domain transfer (LoCoMo / LongMemEval / STEM-Bench) | 3 text-dialogue benchmarks |
-| SWE-Bench-Lite | Real code tasks |
-| 50 real-user IDE replays | Out-of-distribution leak check (uses HaystackCraft-style noisy distractors) |
+| Cross-domain transfer (MemGym all 5 tracks) | Standardised baselines for all regimes |
+| 50 real-user IDE replays | Out-of-distribution leak check (uses TraceLab-style noisy distractors) |
 | Information-theoretic upper bound | Theoretical analysis (spectral preservation) |
-| Adversarial injection (A-MemGuard style) | Robustness test (50 cases) |
-| **SmartSearch head-to-head** | direct rank-fusion vs strength-cosine comparison |
+| Adversarial injection (MemCollusion 2608.01637) | Robustness test (50 cases) |
+| SmartSearch head-to-head | Direct rank-fusion vs strength-cosine comparison |
+| LCM head-to-head | Lossy summary-DAG vs cosine-preserving comparison |
+| HyMeS (2608.09410) integration demo | Memory-via-code-agent integration with deepseek-harness |
+| Cross-backbone (Qwen3 / Llama-3 / Gemma / MiniMax-M3) | Model-agnostic V_t verification |
