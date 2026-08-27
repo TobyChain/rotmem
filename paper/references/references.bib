@@ -873,3 +873,91 @@
   url    = {https://arxiv.org/abs/2602.21477},
   note   = {Public-facing agentic framework safety analysis. Cited as the production-safety context for my security analysis.}
 }
+
+@article{hmm2026,
+  title  = {{Hierarchical Memory Mamba}: Solving Representation Bottleneck in Long Sequence Modeling},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.02347},
+  note   = {Mamba + working memory for slow semantic states. **Parallel architecture citation**: my V_t is the deterministic working-memory analogue for agent (not sequence-model) memory.}
+}
+
+@article{memreasoner2025,
+  title  = {{MemReasoner}: Can Memory-Augmented Language Models Generalize on Reasoning-in-a-Haystack Tasks?},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2503.07903},
+  note   = {Memory-augmented LLM: 'memory learns the relative order of facts in context'. My version is the deterministic generalisation without the learned order.}
+}
+
+@article{retrieval_attention_hybrid2025,
+  title  = {Some Attention is All You Need for Retrieval: Functional Segregation in Hybrid {SSM}-Transformer Architectures},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2510.19861},
+  note   = {Attention ablation causes 0\% retrieval in hybrid SSM-Transformer; SSM layers show no compensatory retrieval. **Critical positioning**: my buffer provides retrieval that SSM-only backbones cannot. Open use case: deploy with Mamba backbones for long-context + retrieval.}
+}
+
+@article{rank1_2025,
+  title  = {{Rank1}: Test-Time Compute for Reranking in Information Retrieval},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2502.18418},
+  note   = {Test-time compute reranking via R1 distillation. **Direct contrast**: my approach = zero TTS, theirs = heavy TTS. New axis: compute-light vs compute-heavy retrieval.}
+}
+
+@article{forgetting_as_feature2026,
+  title  = {Forgetting as a Feature: Cognitive Alignment of {LLM}s via Exponential Decay},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2601.09726},
+  note   = {Cognitive model: LLM inference as probabilistic memory process governed by exponential decay. **Biological-plausibility citation** for my exponential decay mechanism.}
+}
+
+@article{mira2025,
+  title  = {{MIRA}: Memory-Integrated Reinforcement Learning Agent with Limited {LLM} Guidance},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2509.26340},
+  note   = {Memory + RL: 'compact memory of domain-specific experiences' with Q-values. My strength tracking is the simpler alternative.}
+}
+
+@article{tokenmem2025,
+  title  = {{TokenMem}: Faithful Knowledge Injection for Frozen {LLM}s via Counterfactual Training},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2607.22625},
+  note   = {Trains thin gating adapter (3-7M params) for counterfactual knowledge compliance. **My version: zero-training decay + cosine** = strictly simpler.}
+}
+
+@article{remi2025,
+  title  = {{REMI}: A Novel Causal Schema Memory Architecture for Personalized Lifestyle Recommendation},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2509.06269},
+  note   = {Causal schema memory + reasoning engine + planning. My buffer is the *non-causal* alternative; cite as future-work extension.}
+}
+
+@article{sliding_window_mab2026,
+  title  = {Online Limited Memory Neural-Linear Bandits with Likelihood Matching},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2606.08977},
+  note   = {Sliding-window streaming MABs with recency effect. **My decay is the deterministic bandit policy**; cite as bandit-theory foundation.}
+}
+
+@article{neurips_reproducibility2026,
+  title  = {{NeurIPS} Should Require Reproducibility Standards for Frontier {AI} Safety Claims},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2607.27191},
+  note   = {Normative reference for why my buffer ships with 14 unit tests + frozen seeds.}
+}
+
+@article{falcon_mamba2025,
+  title  = {{Falcon Mamba 7B}: A New Base Large Language Model Based on the {Mamba} Architecture},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2410.05355},
+  note   = {State-space backbone. My buffer is *complementary* to SSM backbones: works with any backbone.}
+}
