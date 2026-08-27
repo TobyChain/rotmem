@@ -4,10 +4,22 @@
 
 **Date.** 2026-08-27
 
-**Status.** Pre-implementation, design lock.
+**Status.** Round 5 (post 4 reflection rounds). Positioning locked.
+
+### Positioning sentence
+
+**RotMem = Oblivion-minus-the-controller** (arXiv:2604.00131) **= SmartSearch-minus-the-CrossEncoder** (arXiv:2603.15599) **= LoMA-minus-the-bit-perfectness** (arXiv:2401.09486). All three of those papers ask "do we really need a learned component?"; RotMem answers the next question: "do we need *any* learned component, or are deterministic information-theoretic priors enough?"
+
+### Map of competencies (from LoCoBench-Agent arXiv:2507.05257)
+
+| Competency | Mechanism in RotMem |
+|---|---|
+| Accurate retrieval | strength-weighted cosine top-k |
+| Test-time learning | strength update on each write |
+| Long-range understanding | lazy orthogonal V_t projecting past keys |
+| Selective forgetting | exponential decay + merge-on-overflow |
 
 ---
-
 ## 1. Short Hypothesis
 
 If the memory state of a single-session LLM agent is maintained as a

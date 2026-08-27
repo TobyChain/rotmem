@@ -1,0 +1,207 @@
+% RotMem bibliography
+% Format: BibTeX entries with arXiv IDs as keys where possible.
+% Maintained by hand; defer crossref resolution to paper-writing stage.
+
+% =====================================================================
+% Origin: Residual Memory Networks / Reservoir Computing
+% =====================================================================
+
+@article{pinna2025residual,
+  title  = {Residual Memory Networks (RMN) topic page},
+  author = {Pinna, G. and others},
+  year   = {2025},
+  url    = {https://www.emergentmind.com/topics/residual-memory-networks},
+  note   = {Topic page summarising RMN papers: residual state m(t) = Vm m(t-1) + Vx x(t) with orthogonal Vm (spectral radius $\rho = 1$). Lifts lossless-rotation reservoir paradigm to LLM-agent memory.}
+}
+
+@inproceedings{bendi_ouis2025est,
+  title  = {{Echo State Transformer}: Attention Over Finite Memories},
+  author = {Bendi-Ouis, Yannis and Hinaut, Xavier},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2507.02917},
+  note   = {EST: hybrid architecture combining Transformer attention with reservoir computing dynamics. Closest architectural cousin of RotMem among published work.}
+}
+
+% =====================================================================
+% Memory-agent benchmarks and competency frameworks
+% =====================================================================
+
+@article{locobench2025,
+  title  = {{LoCoBench-Agent}: An Interactive Benchmark for {LLM} Agents in Long-Context Software Engineering},
+  author = {Qiu, K. and others},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2507.05257},
+  note   = {Defines four competencies for memory agents: (i) accurate retrieval, (ii) test-time learning, (iii) long-range understanding, (iv) selective forgetting. We map each to a RotMem mechanism.}
+}
+
+@article{haystackcraft2025,
+  title  = {Haystack Engineering: Context Engineering for Heterogeneous and Agentic Long-Context Evaluation},
+  author = {Park, J. and others},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2510.07414},
+  note   = {Argues NIAH is too clean; introduces HaystackCraft built on Wikipedia hyperlinks with multi-hop questions and heterogeneous distractor composition. Used as our robustness extension (noisy contexts).}
+}
+
+% =====================================================================
+% Closest behavioural neighbours: Oblivion + SmartSearch
+% =====================================================================
+
+@article{oblivion2026,
+  title  = {{Oblivion}: Self-Adaptive Agentic Memory Control through Decay-Driven Activation},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.00131},
+  note   = {Cast forgetting as decay-driven accessibility reductions. Decouples read and write paths: read decides when to consult memory based on agent uncertainty; write decides what to strengthen based on response contribution. **Closest behavioural twin** of RotMem — both share the read/write decoupling and decay mechanism, but Oblivion uses a learned controller. RotMem is Oblivion minus the controller: deterministic thresholds match or beat learned policy with zero inference cost.}
+}
+
+@article{smartsearch2026,
+  title  = {{SmartSearch}: How Ranking Beats Structure for Conversational Memory Retrieval},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.15599},
+  note   = {Retrieves from raw conversation history using a fully deterministic pipeline (NER-weighted substring matching + CrossEncoder+ColBERT rank fusion). Oracle analysis identifies a *compilation bottleneck*: retrieval recall reaches 98.6\% but only 22.5\% of gold evidence survives truncation without intelligent ranking. Adopts the "ranking > structure" framing for our positioning.}
+}
+
+% =====================================================================
+% Selective forgetting and memory-consolidation theory
+% =====================================================================
+
+@article{useitloseit2026,
+  title  = {Use it or Lose it: Selective Memory and Forgetting in a Perpetual Learning Machine},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.20300},
+  note   = {Frames selective forgetting as delivering benefits across three dimensions: efficiency via pruning, quality via outdated-context updates, security via active forgetting of malicious inputs. Justifies RotMem's decay+merge as a security primitive (adversarial-injection defence).}
+}
+
+@article{fsfm2024,
+  title  = {{FSFM}: A Biologically-Inspired Framework for Selective Forgetting of Agent Memory},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2405.18663},
+  note   = {Learning with Selective Forgetting (LSF): contrastive dispersion for deleted classes vs compactness for preserved ones. We contrast our merge (weighted-average consolidation) with FSFM's contrastive dispersion as a simpler alternative.}
+}
+
+% =====================================================================
+% Incremental compression and consolidation theory
+% =====================================================================
+
+@article{memsif2026,
+  title  = {{MemSIF}: From Structured Interactions to Dual-Track Fact Memory for {LLM} Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.01742},
+  note   = {Identifies two recurring failure patterns in long-term memory: (i) Temporal-Structural Misalignment (TSM), (ii) Delayed Utility Manifestation (DUM). RotMem's lazy rotation + strength decay directly mitigates DUM by re-weighting at query-time, not write-time.}
+}
+
+@article{scaffold_flow2025,
+  title  = {What should we forget? A computational model of memory consolidation},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2508.11646},
+  note   = {Formulates memory consolidation as scaffold-flow: fast state-dependent responses (flow) + slowly-changing physical variables (scaffold). Useful coarse-graining preserves future-relevant distinctions while discarding irrelevant variation. Maps directly onto RotMem: strength field = scaffold, lazy V_t basis = flow.}
+}
+
+% =====================================================================
+% Compression-theoretical foundations
+% =====================================================================
+
+@article{loma2024,
+  title  = {{LoMA}: Lossless Compressed Memory Attention},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2401.09486},
+  note   = {Claims "lossless" KV-cache compression. We adopt LoMA's framing but qualify RotMem as *cosine-preserving* (near-lossless for retrieval, but not bit-perfect reconstruction).}
+}
+
+@article{jl2020,
+  title  = {Sparser {Johnson-Lindenstrauss} Transforms},
+  author = {Author, et al.},
+  year   = {2020},
+  url    = {https://arxiv.org/abs/2009.08320},
+  note   = {Random orthogonal projections approximately preserve all pairwise Euclidean distances. RotMem uses *deterministic* orthogonal projection — strictly more information-preserving than random JL.}
+}
+
+% =====================================================================
+% Other directly-related work
+% =====================================================================
+
+@article{memopd2026,
+  title  = {{MemOPD}: On-Policy Distillation through Memory State Alignment for Long-Horizon Agents},
+  author = {Liu, Z. and Ye, T. and Liu, C. and Li, Y. and Huang, S.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.07068},
+  note   = {Internal scoring infrastructure for memory-compression agents (records inputs/outputs, restores causal visibility, packs for teacher scoring). Orthogonal to RotMem: MemOPD is the *how-to-score* infra; RotMem is the *what-the-state-looks-like* design.}
+}
+
+@article{memres2026,
+  title  = {{MEMRES}: A Memory-Augmented Resolver with Confidence Cascade for Agentic Python Dependency Resolution},
+  author = {Duy Minh, D. S. and Nguyen, T. C. and Huynh, T. K. and Hoa, P. P. and Quy, N. L. P. and Nguyen, V.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.16941},
+  note   = {Name-collision neighbour: agentic Python-dependency resolver with self-evolving tip memory. RotMem is orthogonal — a generic math-buffer architecture for any LLM agent, not a domain-specific tool.}
+}
+
+@article{mem0,
+  title  = {{Mem0}: Building Production-Ready {AI} Agents with Scalable Long-Term Memory},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2504.19413},
+  note   = {Production-grade episodic store with atomic-fact extraction. Suffers the *memory cliff* we target.}
+}
+
+@article{hymem2026,
+  title  = {{HyMEM}: Hybrid Self-evolving Structured Memory for {GUI} Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.10291},
+  note   = {Graph-based memory coupling discrete symbolic nodes with continuous trajectory embeddings. GUI-specific, not residual, not plug-and-play.}
+}
+
+@article{memento2026,
+  title  = {{MeMento}: Multimodal Memory Compression for Embodied Decision-Making},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.01456},
+  note   = {Preference-conditioned multimodal compressor. Embodied, not text/code; not residual.}
+}
+
+@article{streammeco2025,
+  title  = {{StreamMeCo}: Long-Term Agent Memory Compression for Efficient Streaming Dialogue},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2511.21726},
+  note   = {Goal-agnostic compression; argues biased toward benchmarks. RotMem is residual + goal-agnostic.}
+}
+
+@article{zombie2026,
+  title  = {{Zombie Agents}: Persistent Control of Self-Evolving {LLM} Agents via Self-Reinforcing Injections},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2602.15654},
+  note   = {Documents persistent-attack surface of self-evolving memory. Cited as part of RotMem's threat-model — deterministic policy narrows attack surface by construction.}
+}
+
+@article{igpo2025,
+  title  = {Information Gain-based Policy Optimization: A Simple and Effective Approach for Multi-Turn Search Agents},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2510.14967},
+  note   = {Information-gain intrinsic reward for multi-turn agents. Cited as the per-step credit signal that RotMem *does not* need (we use deterministic rules).}
+}
+
+@article{pidistill2026,
+  title  = {Privileged Information Distillation for Language Models},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2602.04942},
+  note   = {$\pi$-Distill: PI-at-train + PI-free student. Cited as theoretical anchor (we considered a learned controller; deterministic rules proved sufficient).}
+}
+
+@article{amemguard2025,
+  title  = {{A-MemGuard}: A Proactive Defense Framework for {LLM}-Based Agent Memory},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2510.02373},
+  note   = {Proactive defence for memory poisoning. Adopted as the design for RotMem's adversarial-injection test (extension).}
+}
