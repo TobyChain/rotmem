@@ -784,3 +784,170 @@ content) axes. Adopt as tertiary benchmark.
 | HNSW (2607.16973) | corpus-scale vector index | Different regime: corpus-scale |
 | Unlearning (2402.15159) | RTBF via retraining | O(1) per-entry deletion |
 | SuperLocalMemory (2506.12088) | Bayesian-trust privacy | Single-agent so trust not needed; threat model shared |
+
+---
+
+## Mosaic: the empirical SOTA competitor (Round 26)
+
+### Mosaic — arXiv:2604.12376 (2026)
+
+- **What it is.** *"When LLM conversations grow beyond the context
+  window, old content must be evicted — but how does the model
+  recover it when needed?"* Cooperative paging: evicted segments
+  replaced with **keyword bookmarks (~8–24 tokens each)** plus a
+  recall() tool.
+- **Result.** Achieves the **highest answer quality among six
+  methods on LoCoMo** (10 real multi-session conversations, 300+
+  turns, 4 models: GPT-4o-mini, DeepSeek-v3.2, Claude Haiku,
+  GLM-5; 4 LLM judges, paired bootstrap p=0.017).
+- **Why this is the *strongest direct empirical competitor*.**
+  Mosaic uses the *exact same benchmark I planned to use* (LoCoMo)
+  and reports *state-of-the-art numbers* against 6 baselines.
+  Add Mosaic as the **7th compactor baseline** in Stage 2.
+- **Delta.** Two axes of difference:
+  - **Information preservation**: Mosaic bookmarks are
+    *8–24 tokens/item* (lossy); RotMem is *full-precision*
+    (cosine-preserving, lossy only at the merge boundary).
+  - **Recall overhead**: Mosaic requires a recall() tool call
+    per turn (extra LM round-trip); RotMem's strength-weighted
+    cosine is *always available* with no tool call.
+- **Predicted Stage 2 outcome.** RotMem > Mosaic on LoCoMo F1
+  because (a) full-precision retrieval preserves more information
+  and (b) no recall overhead saves context-window tokens for
+  downstream reasoning.
+
+---
+
+## Edge deployment / tiny-LLM memory (Round 25)
+
+### MemLoRA — arXiv:2512.04763 (2025)
+
+- *On-device memory systems via LoRA distillation*. Cited as the
+  edge-deployment precedent; RotMem achieves the same goal *without*
+  LoRA, so strictly smaller footprint.
+
+### EmbBERT — arXiv:2502.10001 (2025) — *Attention Under 2 MB Memory*
+
+- Tiny language model in the extreme-edge regime. **Frames RotMem as
+  completing the memory side of the edge stack**: when the LLM
+  itself is under 2 MB, the memory layer must be <5 MB too.
+
+### PocketLLM — arXiv:2502.20421 (2025)
+
+- On-device LLM fine-tuning. Cited as on-device LLM architecture
+  precedent.
+
+### EDGE-LLM — arXiv:2508.11269 (2025)
+
+- Edge LLM adaptation *emphasising data privacy*. Reinforces
+  RotMem's on-device positioning.
+
+---
+
+## Evaluation rigour (Round 26)
+
+### PaCoST — arXiv:2502.06655 (2025)
+
+- Paired Confidence Significance Testing for benchmark contamination
+  detection. **Cited as the rigour anchor** for Stage 2 statistical
+  protocol. Adopt: paired bootstrap, Holm-Bonferroni across
+  baselines, per-pair permutation test.
+
+### Watermark Contamination — arXiv:2406.18326 (2024)
+
+- Watermarking-based contamination detection. Cited alongside PaCoST.
+
+### Mosaic — arXiv:2604.12376 (2026) — *also rigour reference*
+
+- Mosaic's evaluation protocol: paired bootstrap, 4 LLM judges, 4
+  backbones. Adopt exactly for fair head-to-head comparison.
+
+---
+
+## Reasoning + tool-use memory (Round 27)
+
+### MemQ — arXiv:2605.08374 (2026)
+
+- *Critiques independent retrieval evaluation*; argues for credit
+  propagation through a *provenance DAG* via TD(λ). Validates my
+  Stage 2 design: I evaluate *downstream task F1* (Memory-Cliff AUC),
+  not just retrieval F1.
+- **Delta.** MemQ uses learned TD; RotMem uses deterministic
+  state. Orthogonal mechanisms, shared evaluation framing.
+
+### ROLETHINK — arXiv:2503.08193 (2025)
+
+- Inner thought reasoning benchmark. Cited alongside MREval.
+
+### TokMem — arXiv:2608.23035 (2026)
+
+- One-token procedural memory. Cited as extreme-compression reference.
+
+### MobilePA-Bench — arXiv:2608.23035 (2026)
+
+- Mobile planner agent benchmark. Cited for edge deployment scenario.
+
+---
+
+## Updated summary delta-table (Round 28)
+
+| Paper | Mechanism | Δ from RotMem |
+|---|---|---|
+| **Mosaic (2604.12376)** — LoCoMo SOTA | Cooperative paging with 8-24-token bookmarks | **Add as 7th baseline.** Full-precision vs lossy bookmarks |
+| **MemLoRA (2512.04763)** | On-device memory via LoRA | Same regime, smaller footprint (no LoRA) |
+| **EmbBERT (2502.10001)** | Attention under 2 MB | My buffer completes the edge stack |
+| **PaCoST (2502.06655)** | Paired confidence significance test | Adopt for statistical protocol |
+| **MemQ (2605.08374)** | TD(λ) over provenance DAG | Orthogonal mechanism, shared eval framing |
+| **ROLETALK (2503.08193)** | Role-play inner thought | Cited alongside MREval |
+| **TokMem (2608.23035)** | One-token procedural memory | Extreme compression reference |
+| **MobilePA-Bench (2608.23035)** | Mobile planner benchmark | Cited for edge deployment |
+| LiveMem (2608.02515) | learned intrinsic memory state | Same problem, deterministic answer |
+| MREval (2603.19313) | 4 memory-driven abilities | Operationalisation of LoCoBench |
+| TrajWiki (2608.00967) | source-grounded trajectories | Trivially satisfied by deterministic |
+| CASPIAN (2605.19240) | cascade attack detection | Single-session eliminates cross-session cascade |
+| ACRFence (2605.05391) | semantic rollback defence | Strength decay prevents rollback |
+| Privacy Risks (2508.07664) | user-study of memory privacy | Why-this-matters reference |
+| CIPL (2603.22751) | channel-oriented privacy | Smaller surface (one channel) |
+| STC (2606.05241) | search-time contamination | Single-session offline → immune |
+| Identity Drift (2412.00804) | multi-turn persona drift | Strength anchoring prevents drift |
+| SPASM (2511.00222) | persona consistency benchmark | Adopt as tertiary benchmark |
+| CiteGuard (2608.21376) | faithful citation attribution | Evidence identity preserved |
+| Dynamic ReAct (2509.20386) | tool selection for ReAct | Integration target |
+| EvoMemBench (2605.18421) | self-evolving memory benchmark | Adopt as tertiary benchmark |
+| Landmark Attention (2605.27980) | infinite-context attention | Different axis: state vs context |
+| QJL (2603.26110) | JL + 1-bit sign on KV cache | Same orthogonal transform, different object + full-precision |
+| NAM (2302.09422) | Neural Attention Memory (differentiable) | Non-differentiable deterministic counterpart |
+| ISM (2604.27003) | continual learning bottleneck at memory | Deterministic answer: stability-plasticity dial |
+| NSER (2605.09419) | active reasoning over passive replay | Cited as future-work for active extension |
+| Catastrophic Forgetting (2402.18865) | stability-plasticity PEFT | My decay τ controls the trade-off |
+| MemoryArena (2602.16313) | Multi-session MAE benchmark | Adopt as primary benchmark |
+| MemSyco-Bench (2607.01071) | memory-induced sycophancy | New failure mode to test |
+| TPI-LLM (2504.02273) | memory aug for 1B-class | Motivation for 2B evaluation |
+| LLMCarbon (2511.08575) | Carbon estimation framework | Provide carbon-saving estimate table |
+| Rate-distortion (2206.10083) | lower bound for projection | My V_t achieves ε=0 |
+| Cottention (2602.13680) | cosine attention for linear Transformers | Parallel motivation for cosine retrieval |
+| MEMRES (2604.16941) | tip-pool memory for dependency resolution | Domain-specific |
+| RMN (emergentmind) | orthogonal reservoir | We lift it |
+| EST (2507.02917) | ESN + attention hybrid | Substrate vs projection |
+| Oblivion (2604.00131) | decay-driven read/write decoupling, learned controller | RotMem = Oblivion minus the controller |
+| SmartSearch (2603.15599) | deterministic NER+ranker | RotMem = SmartSearch minus the CrossEncoder |
+| MemSIF (2608.01742) | TSM, DUM | RotMem mitigates DUM |
+| Use-it-or-Lose-it (2604.20300) | selective forgetting | Decay+merge as security primitive |
+| FSFM (2405.18663) | contrastive selective forgetting | Simpler: weighted-mean |
+| Scaffold-flow (2508.11646) | flow/scaffold | scaffold=strength, flow=V_t |
+| LoMA (2401.09486) | lossless KV-cache compression | Weaker guarantee at lower cost |
+| Johnson-Lindenstrauss (2009.08320) | random orthogonal | Deterministic, data-adaptive |
+| MemOPD (2608.07068) | on-policy scoring infra | Orthogonal: infra vs state-design |
+| LCM (2605.04050) | hierarchical summary DAG + LLM-Map | RotMem is non-recursive, no LLM-Map |
+| RLM (2603.02615) | recursive LM in external REPL | Depth-2+ "overthinks" |
+| MemGym (2605.20833) | benchmark | Adopt as primary benchmark |
+| HyMeS (2608.09410) | coding-agent for memory mgmt | Integration target precedent |
+| MARS (2605.14401) | 3-tier memory + strength tracking | Same architecture, deterministic merge |
+| NEMORI (2508.03341) | prediction-error retention | Deterministic threshold |
+| CLAG (2603.15421) | SLM-driven clustering | Implicit clustering via V_t |
+| MemTrace (2608.06909) | debugging methodology | Substrate is debugging-free |
+| MemOS (2507.03724) | memory hierarchy OS | Complementary: hot-cache primitive |
+| EverMemOS (2601.02163) | engram-lifecycle memory OS | Complementary: we are the buffer |
+| HNSW (2607.16973) | corpus-scale vector index | Different regime |
+| Unlearning (2402.15159) | RTBF via retraining | O(1) per-entry deletion |
+| SuperLocalMemory (2506.12088) | Bayesian-trust privacy | Threat model shared |

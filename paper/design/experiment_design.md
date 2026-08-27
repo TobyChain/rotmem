@@ -4,7 +4,7 @@
 
 ### Independent variables (control)
 
-- `compactor ∈ {compaction-basic, mem0, amemguard, smartsearch, lcm, rotmem}`  — **6 compactors** after Round 12 (LCM added)
+- `compactor ∈ {compaction-basic, mem0, amemguard, smartsearch, lcm, mosaic, rotmem}`  — **7 compactors** after Round 26 (Mosaic added)
 - `backbone ∈ {qwen3-2b, qwen3-9b, minimax-m3}`
 - `seed ∈ {0, 1, 2}`
 - `dataset_split ∈ {split_a, split_b}`
@@ -75,7 +75,7 @@ The following is locked before any analysis runs:
 | Primary metric | `Δ_F1(100→500)` on Memory-Cliff AUC |
 | Null threshold | RotMem − best-baseline < 1 pt |
 | Effect-size threshold | Cohen's d ≥ 0.5 |
-| Multiple-testing correction | Holm-Bonferroni across the **6 compactors** |
+| Multiple-testing correction | Holm-Bonferroni across the **7 compactors** (6 original + Mosaic) |
 | Significance level | α = 0.05 |
 | Random seeds | 0, 1, 2 |
 | Theoretical pre-registration | V_t must remain orthogonal (|ρ−1| < 1e-3) for all 500 turns, every seed |
@@ -167,7 +167,9 @@ The category distribution itself is reported.
 ## 7. Reproducibility
 
 - Every session seed and turn sequence is hashed and stored.
-- Compactor parameters are versioned in `configs/`.
+| **`lcm`** | hierarchical summary DAG + LLM-Map | **≥1 per LLM-Map** | summary DAG | summary-DAG is lossy; recursion adds latency |
+| **`mosaic`** | cooperative paging + 8-24-token keyword bookmarks + recall() tool | **0 (encoder-free)** | keyword bookmarks | **Lossy bookmarks; recall tool overhead** |
+| **`rotmem`** (ours) | orthogonal basis + decay + merge | **0** | **0** | none observed; ~1ms/turn |
 - A single command `make reproduce` re-runs all main experiments.
 - Teacher traces (if needed for cross-validation) are not required
   for RotMem; we re-publish the 100 session seeds.

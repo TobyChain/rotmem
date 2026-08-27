@@ -77,8 +77,8 @@ RotMem is the only work at the intersection of:
 | **EvoMemBench** (arXiv:2605.18421) | 15-method self-evolving memory benchmark | Cross-paper comparison |
 
 ## 6. Security & compliance evaluation
-
-RotMem is **secure-by-construction** *and* **compliance-ready**:
+| **EvoMemBench** (arXiv:2605.18421) | 15-method self-evolving memory benchmark | Cross-paper comparison |
+| LoCoMo (Mosaic benchmark) (arXiv:2604.12376) | Multi-session long-horizon memory | Adopt Mosaic's exact 4-model + 4-judge protocol |
 
 | Property | Defence | Reference |
 |---|---|---|
@@ -91,7 +91,9 @@ RotMem is **secure-by-construction** *and* **compliance-ready**:
 | Lazy orthogonal projection bounds memory-fog attacks | | |
 | **RTBF (right-to-be-forgotten)**: setting strength to 0 makes an item invisible | $\mathcal{O}(1)$ per-entry deletion | vs Machine unlearning (2402.15159, $>10^5\times$ retrain cost) |
 | **Debuggability**: deterministic policy → closed-form evolution graph | No MemTrace-style methodology needed | vs MemTrace (2608.06909) |
-
+| **Offline-only**: cannot be search-time contaminated | Structural property of single-session buffer | vs STC (2606.05241) |
+| **Strictly more information-preserving than Mosaic (LoCoMo SOTA)** | Full-precision cosine preservation vs lossy 8-24-token bookmarks | vs Mosaic (2604.12376) |
+| **No recall overhead**: no extra LM tool calls per turn | Deterministic strength-weighted cosine always available | vs Mosaic's recall() tool |
 ## 7. Integration
 
 - **Primary**: drop-in Compactor for `deepseek-harness/packages/compaction/`

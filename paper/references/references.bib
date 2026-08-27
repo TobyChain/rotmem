@@ -681,3 +681,91 @@
   url    = {https://arxiv.org/abs/2605.27980},
   note   = {Random-access infinite context via landmark tokens. Cited to distinguish: I don't extend context length; I extend *memory state*.}
 }
+
+@article{memlora2025,
+  title  = {{MemLoRA}: Distilling Expert Adapters for On-Device Memory Systems},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2512.04763},
+  note   = {On-device memory systems via LoRA distillation. Cited as the *edge deployment* precedent; my RotMem achieves the same goal with zero LoRA (smaller footprint).}
+}
+
+@article{pocketllm2025,
+  title  = {{PocketLLM}: Enabling On-Device Fine-Tuning for Personalized {LLM}s},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2502.20421},
+  note   = {On-device LLM fine-tuning with server-assisted offload. Cited as on-device LLM architecture precedent.}
+}
+
+@article{embbert2025,
+  title  = {{EmbBERT}: Attention Under 2 {MB} Memory},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2502.10001},
+  note   = {Tiny language model under 2MB memory. **Frames RotMem as completing the memory side of the edge stack.**}
+}
+
+@article{edge_llm2025,
+  title  = {{EDGE-LLM}: Enabling Efficient Large Language Model Adaptation on Edge Devices},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2508.11269},
+  note   = {Edge LLM adaptation, *emphasizing data privacy*. Reinforces my on-device positioning.}
+}
+
+@article{mosaic2026,
+  title  = {{Mosaic}: Cooperative Memory Paging with Keyword Bookmarks for Long-Horizon {LLM} Conversations},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.12376},
+  note   = {**SOTA on LoCoMo** (10 real multi-session conv, 300+ turns, 4 models, 4 LLM judges, paired bootstrap p=0.017). Cooperative paging replaces evicted segments with 8-24-token keyword bookmarks + a recall() tool. **Add Mosaic as the 7th compactor baseline** in Stage 2. Delta: Mosaic is *lossy* (8-24 tokens/item); RotMem is *full-precision* + no recall tool needed.}
+}
+
+@article{pacost2025,
+  title  = {{PaCoST}: Paired Confidence Significance Testing for Benchmark Contamination Detection},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2502.06655},
+  note   = {Statistical methodology for benchmark contamination detection. Cited as the rigour anchor for Stage 2 statistical protocol.}
+}
+
+@article{watermark_contamination2024,
+  title  = {Detecting Benchmark Contamination Through Watermarks},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2406.18326},
+  note   = {Watermarking-based contamination detection. Cited alongside PaCoST.}
+}
+
+@article{memq2026,
+  title  = {{MemQ}: Integrating {Q}-Learning into Self-Evolving Memory Agents over Provenance {DAG}s},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.08374},
+  note   = {Critiques independent retrieval evaluation; argues for credit propagation through provenance DAG. Orthogonal to RotMem: MemQ uses learned TD, I use deterministic; but validates my Stage 2 *task-F1* (not retrieval-F1) evaluation.}
+}
+
+@article{tokmem2026,
+  title  = {{TokMem}: One-Token Procedural Memory for {LLM}s},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.23035},
+  note   = {Extreme procedural-memory compression (one token per procedure). Cited as extreme-compression reference.}
+}
+
+@article{rolethink2025,
+  title  = {{ROLETHINK}: A Benchmark for Inner Thought Reasoning of Role-Playing Language Agents},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2503.08193},
+  note   = {Role-playing inner thought reasoning. Cited alongside MREval.}
+}
+
+@article{mobilepa_bench2026,
+  title  = {{MobilePA-Bench}: Benchmarking Mobile Planner Agents on Complex Real-World Tasks},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.23035},
+  note   = {Tool-calling + planning benchmark on mobile devices. Cited as a benchmark for the *edge-deployment* scenario.}
+}
