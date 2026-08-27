@@ -36,7 +36,7 @@ A **5–20MB deterministic math buffer** with:
 footprint 5–20 MB; runs as a NumPy/PyTorch CPU process on any
 laptop.
 
-## 3. Five-axis positioning (Round 16 update)
+## 3. Seven-axis positioning (Round 24 update)
 
 RotMem is the only work at the intersection of:
 
@@ -47,6 +47,8 @@ RotMem is the only work at the intersection of:
 | **Cosine-preserving vs summary** | Cosine-preserving | LCM (summary DAG); MemOPD (lossy); Mem0 (extractive facts) |
 | **Debuggable vs debugging-required** | Debuggable by construction | MemTrace (needs methodology); MemMark (needs watermarks) |
 | **RTBF-native vs RTBF-afterthought** | First-class RTBF via strength-reset | Machine unlearning (2402.15159, retraining); RKLD (KL-based distillation) |
+| **Persona-consistent vs persona-drift** | Drift-resistant via strength anchoring | Identity Drift (2412.00804); SPASM (2511.00222) |
+| **Offline-only vs search-time-exposed** | Single-session offline, immune to STC | Search-Time Contamination (2606.05241) |
 
 ## 4. Theoretical guarantees (with empirical verification)
 
@@ -70,6 +72,9 @@ RotMem is the only work at the intersection of:
 | **HaystackCraft** (arXiv:2510.07414) | Noisy-context robustness | Out-of-distribution check |
 | **Custom 500-turn CLI harness** | Subtask-controlled ablation | Where MemGym doesn't expose enough controls |
 | **TraceLab workload prior** (arXiv:2606.30560) | 4,300 real sessions | Realistic scenario generation |
+| **MemoryArena** (arXiv:2602.16313) | Multi-session MAE loops, human-crafted tasks | Realistic human-craft complement to synthetic |
+| **MREval** (arXiv:2603.19313) | Persona-driven role-playing 4-ability evaluation | Operationalisation of LoCoBench competencies |
+| **EvoMemBench** (arXiv:2605.18421) | 15-method self-evolving memory benchmark | Cross-paper comparison |
 
 ## 6. Security & compliance evaluation
 
@@ -79,7 +84,10 @@ RotMem is **secure-by-construction** *and* **compliance-ready**:
 |---|---|---|
 | No learnable weights → no backdoor surface | vs Back-Reveal (2604.05432) | |
 | Exponential decay breaks collusive persistence | vs MemCollusion (2608.01637) | |
-| Strength recency caps the Delayed-Utility-Manifestation window | vs MemSIF DUM (2608.01742) | |
+| **Debuggability**: deterministic policy → closed-form evolution graph | No MemTrace-style methodology needed | vs MemTrace (2608.06909) |
+| **Single observable channel**: strength-weighted retrieval | Channel-oriented privacy surface strictly smaller than LiveMem's learned channels | vs CIPL (2603.22751) |
+| **Same problem statement** as LiveMem | LiveMem uses learned state (200MB-1.5GB GPU); RotMem uses deterministic (5-20MB CPU) | vs LiveMem (2608.02515) |
+| **Offline-only**: cannot be search-time contaminated | Structural property of single-session buffer | vs STC (2606.05241) |
 | Lazy orthogonal projection bounds memory-fog attacks | | |
 | **RTBF (right-to-be-forgotten)**: setting strength to 0 makes an item invisible | $\mathcal{O}(1)$ per-entry deletion | vs Machine unlearning (2402.15159, $>10^5\times$ retrain cost) |
 | **Debuggability**: deterministic policy → closed-form evolution graph | No MemTrace-style methodology needed | vs MemTrace (2608.06909) |

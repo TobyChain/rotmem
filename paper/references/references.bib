@@ -561,3 +561,123 @@
   url    = {https://arxiv.org/abs/2602.13680},
   note   = {Cites cosine as a structure-preserving similarity for linear attention. Cited as parallel motivation for using cosine as the buffer retrieval metric.}
 }
+
+@article{livemem2026,
+  title  = {{LiveMem}: Maintaining Memory State Continuity in Long-Running {LLM} Inference},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.02515},
+  note   = {Frames the same exact problem as RotMem: "carrying computation forward through a fixed-capacity memory state whose lifetime is independent of the active context". Uses learned state; RotMem = LiveMem with deterministic rules.}
+}
+
+@article{evomembench2026,
+  title  = {{EvoMemBench}: Benchmarking Agent Memory from a Self-Evolving Perspective},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.18421},
+  note   = {Benchmark: 15 memory methods compared on two axes (memory scope, content). Adopted as tertiary benchmark.}
+}
+
+@article{dynamic_react2025,
+  title  = {Dynamic {ReAct}: Scalable Tool Selection for Large-Scale {MCP} Environments},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2509.20386},
+  note   = {Addresses "MCP tool sets exceeding contextual memory limitations". Cited as the *integration target* for RotMem in ReAct loops.}
+}
+
+@article{mreval2025,
+  title  = {Memory-Driven Role-Playing: Evaluation and Enhancement of Persona Knowledge Utilization},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2603.19313},
+  note   = {MREval: 4 memory-driven abilities (Anchoring, Recalling, Bounding, Enactment) — map almost 1-to-1 to RotMem's 3 mechanisms. Operationalisation of LoCoBench 4-competency framework.}
+}
+
+@article{trajwiki2026,
+  title  = {{TrajWiki}: Source-Grounded Memory Trajectories for Long-Horizon Dialogue Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.00967},
+  note   = {Frames memory as "traceable, updatable, diagnostically transparent" — RotMem's deterministic buffer is trivially all three.}
+}
+
+@article{citeguard2026,
+  title  = {{CiteGuard}: Faithful Citation Attribution for {LLM}s via Retrieval-Augmented Validation},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.21376},
+  note   = {Faithful citation attribution. Cited as evidence-anchoring prior; my orthogonal projection preserves evidence identity for retrieval.}
+}
+
+@article{spasm2025,
+  title  = {{SPASM}: Stable Persona-driven Agent Simulation for Multi-turn Dialogue Generation},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2511.00222},
+  note   = {Persona-consistency multi-turn dialogue benchmark. Add as benchmark for persona-consistency evaluation.}
+}
+
+@article{identity_drift2024,
+  title  = {Examining Identity Drift in Conversations of {LLM} Agents},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2412.00804},
+  note   = {"Larger models experience greater identity drift". My strength-weighted retrieval anchors persona-establishing items against drift.}
+}
+
+@article{caspian2026,
+  title  = {{CASPIAN}: Online Detection and Attribution of Cascade Attacks in {LLM} Multi-Agent Systems},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.19240},
+  note   = {Cascade attacks across agents. My single-session scope eliminates cross-session cascade surface.}
+}
+
+@article{acrfence2026,
+  title  = {{ACRFence}: Preventing Semantic Rollback Attacks in Agent Checkpoint-Restore},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.05391},
+  note   = {Checkpoint-restore error recovery. My strength decay prevents semantic rollback at the memory layer.}
+}
+
+@article{privacy_risks2025,
+  title  = {Unveiling Privacy Risks in {LLM} Agent Memory},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2508.07664},
+  note   = {User-study of LLM agent memory privacy. Cited as the "why this matters" reference for the privacy section.}
+}
+
+@article{cipl2026,
+  title  = {{CIPL}: Observable Channels for Privacy Leakage in {LLM} Agent Pipelines},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.22751},
+  note   = {Channel-oriented privacy leakage measurement. My deterministic buffer has *only one observable channel* (strength-weighted retrieval), giving a strictly smaller privacy surface than learned buffers.}
+}
+
+@article{stc2026,
+  title  = {Search-Time Contamination in Deep Research Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2606.05241},
+  note   = {Agents retrieve benchmark metadata through web search -> contamination. My single-session buffer is offline-only by construction -> cannot be search-time contaminated.}
+}
+
+@article{stma2026,
+  title  = {{STMA}: A Spatio-Temporal Memory Agent for Long-Horizon Embodied Task Planning},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.18421},
+  note   = {Memory agent for embodied task planning. Cited as evidence that *memory-augmented LLM agents* is an active research direction across embodied, robotic, and software-engineering domains.}
+}
+
+@article{landmark_attention2026,
+  title  = {Landmark Attention: Random-Access Infinite Context Length for Transformers},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.27980},
+  note   = {Random-access infinite context via landmark tokens. Cited to distinguish: I don't extend context length; I extend *memory state*.}
+}

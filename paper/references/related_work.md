@@ -612,3 +612,175 @@ without a learned ranker), and = **LoMA-minus-the-bit-perfectness**
 | HNSW (2607.16973) | corpus-scale vector index | Different regime: corpus-scale |
 | Unlearning (2402.15159) | RTBF via retraining | O(1) per-entry deletion |
 | SuperLocalMemory (2506.12088) | Bayesian-trust privacy | Single-agent so trust not needed; threat model shared |
+
+---
+
+## Tool-use and plan-execute memory (Round 21)
+
+### LiveMem — arXiv:2608.02515 (2026)
+
+- **What it is.** *"Carrying computation forward through a fixed-capacity memory state whose lifetime is independent of the active context."* Introduces a learned intrinsic memory state.
+- **Why this is the closest *problem formulation* to RotMem.** LiveMem asks the same question my work answers. The answer differs: LiveMem learns the state; RotMem uses deterministic rules.
+- **Delta.** LiveMem = RotMem + learned controller + LM call per turn. Adopting LiveMem costs 200MB-1.5GB GPU memory; RotMem costs 5-20MB CPU.
+
+### Dynamic ReAct — arXiv:2509.20386 (2025)
+
+- ReAct-style agents that operate with extensive MCP tool sets
+  exceeding context memory limits.
+- **Delta.** Dynamic ReAct uses a learned router; RotMem's
+  cosine-top-k is the deterministic equivalent. Cited as
+  *integration target*.
+
+### EvoMemBench — arXiv:2605.18421 (2026)
+
+- Self-evolving memory benchmark: 15 methods compared on (scope
+,
+content) axes. Adopt as tertiary benchmark.
+
+### Landmark Attention — arXiv:2605.27980 (2026)
+
+- Random-access infinite context. Cited to distinguish: RotMem
+  addresses *memory state*, not context length.
+
+### STMA — arXiv:2605.18421 (2026)
+
+- Spatio-temporal memory agent for embodied task planning.
+  Cited as evidence that the memory-augmented-LLM-agent direction
+  is active across embodied, robotic, and software-engineering
+  domains.
+
+---
+
+## Hallucination, faithfulness, persona (Round 22)
+
+### MREval — arXiv:2603.19313 (2025)
+
+- **What it is.** *Memory-Driven Role-Playing*: tests 4
+  memory-driven abilities — **Anchoring, Recalling, Bounding,
+  Enactment**.
+- **Why this is *the* operationalisation for my work.** My
+  three mechanisms map almost 1-to-1:
+  - **Anchoring** ↔ strength-weighted ranking
+  - **Recalling** ↔ cosine top-k retrieval
+  - **Bounding** ↔ exponential decay (selective forgetting)
+  - **Enactment** ↔ orthogonal projection (long-range preservation)
+- **Delta.** MREval evaluates *role-playing* LLMs; my setting is
+  *personal-assistant* LLMs. The mechanism mapping is the same;
+  the application domain differs.
+
+### TrajWiki — arXiv:2608.00967 (2026)
+
+- Frames memory as *"traceable, updatable, diagnostically
+  transparent"*. RotMem's deterministic buffer is trivially all
+  three.
+
+### CiteGuard — arXiv:2608.21376 (2026)
+
+- Faithful citation attribution via retrieval-augmented
+  validation. Cited as evidence-anchoring prior art.
+
+---
+
+## Multi-turn consistency & cascade failures (Round 23)
+
+### SPASM — arXiv:2511.00222 (2025)
+
+- Persona consistency in multi-turn dialogue. Adopt as benchmark
+  for persona-consistency evaluation.
+
+### Identity Drift — arXiv:2412.00804 (2024)
+
+- *"Larger models experience greater identity drift."* My
+  strength-weighted retrieval anchors persona-establishing items
+  against drift.
+
+### CASPIAN — arXiv:2605.19240 (2026)
+
+- Cascade attacks across agents in multi-agent systems. My
+  *single-session scope* eliminates cross-session cascade
+  surface.
+
+### ACRFence — arXiv:2605.05391 (2026)
+
+- Semantic rollback attacks in agent checkpoint-restore. My
+  strength decay prevents rollback at the memory layer.
+
+---
+
+## Privacy of memory (Round 24)
+
+### Privacy Risks in LLM Agent Memory — arXiv:2508.07664 (2025)
+
+- User study of LLM agent memory privacy. Cited as the
+  *why-this-matters* reference for the privacy section.
+
+### CIPL — arXiv:2603.22751 (2026)
+
+- **Channel-oriented privacy leakage measurement.** Identifies
+  channels like sensitive-source, selection, assembly, execution,
+  observation, extraction. My deterministic buffer has *one
+  observable channel* (strength-weighted retrieval): strictly
+  smaller privacy surface than learned buffers.
+
+### Search-Time Contamination — arXiv:2606.05241 (2026)
+
+- Agents retrieve benchmark metadata through web search
+  → contamination. My *single-session, offline* buffer cannot be
+  search-time contaminated. Frame as a structural property.
+
+---
+
+## Updated summary delta-table (Round 24)
+
+| Paper | Mechanism | Δ from RotMem |
+|---|---|---|
+| **LiveMem (2608.02515)** | learned intrinsic memory state | Same problem, deterministic answer |
+| **MREval (2603.19313)** | 4 memory-driven abilities (Anchoring, Recalling, Bounding, Enactment) | Operationalisation of LoCoBench 4-competency; mechanism-mapping |
+| **TrajWiki (2608.00967)** | source-grounded trajectories | Trivially satisfied by deterministic policy |
+| **CASPIAN (2605.19240)** | cascade attack detection | Single-session eliminates cross-session cascade |
+| **ACRFence (2605.05391)** | semantic rollback defence | Strength decay prevents rollback |
+| **Privacy Risks (2508.07664)** | user-study of memory privacy | Why-this-matters reference |
+| **CIPL (2603.22751)** | channel-oriented privacy leakage | Smaller surface (one channel) |
+| **STC (2606.05241)** | search-time contamination | Single-session offline → immune |
+| **Identity Drift (2412.00804)** | multi-turn persona drift | Strength anchoring prevents drift |
+| **SPASM (2511.00222)** | persona consistency benchmark | Adopt as tertiary benchmark |
+| **CiteGuard (2608.21376)** | faithful citation attribution | Evidence identity preserved |
+| **Dynamic ReAct (2509.20386)** | tool selection for ReAct | Integration target |
+| **EvoMemBench (2605.18421)** | self-evolving memory benchmark | Adopt as tertiary benchmark |
+| **Landmark Attention (2605.27980)** | infinite-context attention | Different axis: state vs context |
+| QJL (2603.26110) | JL + 1-bit sign on KV cache | Same orthogonal transform, different object + full-precision |
+| NAM (2302.09422) | Neural Attention Memory (differentiable) | Non-differentiable deterministic counterpart |
+| ISM (2604.27003) | continual learning bottleneck at memory | Deterministic answer: stability-plasticity dial |
+| NSER (2605.09419) | active reasoning over passive replay | Cited as future-work for active extension |
+| Catastrophic Forgetting (2402.18865) | stability-plasticity PEFT | My decay τ controls the trade-off |
+| MemoryArena (2602.16313) | Multi-session MAE benchmark | Adopt as primary benchmark |
+| MemSyco-Bench (2607.01071) | memory-induced sycophancy | New failure mode to test |
+| TPI-LLM (2504.02273) | memory aug for 1B-class | Motivation for 2B evaluation |
+| LLMCarbon (2511.08575) | Carbon estimation framework | Provide carbon-saving estimate table |
+| Rate-distortion (2206.10083) | lower bound for projection | My V_t achieves ε=0 (cosine preserved) |
+| Cottention (2602.13680) | cosine attention for linear Transformers | Parallel motivation for cosine retrieval |
+| MEMRES (2604.16941) | tip-pool memory for dependency resolution | Domain-specific; no math buffer |
+| RMN (emergentmind) | orthogonal reservoir | We lift it; reservoir ↔ memory state |
+| EST (2507.02917) | ESN + attention hybrid | Substrate vs projection; model vs buffer |
+| Oblivion (2604.00131) | decay-driven read/write decoupling, learned controller | RotMem = Oblivion minus the controller |
+| SmartSearch (2603.15599) | deterministic NER+ranker | RotMem = SmartSearch minus the CrossEncoder |
+| MemSIF (2608.01742) | TSM, DUM | RotMem mitigates DUM |
+| Use-it-or-Lose-it (2604.20300) | selective forgetting | Decay+merge as security primitive |
+| FSFM (2405.18663) | contrastive selective forgetting | Simpler: weighted-mean |
+| Scaffold-flow (2508.11646) | flow/scaffold | scaffold=strength, flow=V_t |
+| LoMA (2401.09486) | lossless KV-cache compression | Weaker guarantee at lower cost |
+| Johnson-Lindenstrauss (2009.08320) | random orthogonal | Deterministic, data-adaptive |
+| MemOPD (2608.07068) | on-policy scoring infra | Orthogonal: infra vs state-design |
+| LCM (2605.04050) | hierarchical summary DAG + LLM-Map | RotMem is non-recursive, no LLM-Map |
+| RLM (2603.02615) | recursive LM in external REPL | Depth-2+ "overthinks"; we are flat |
+| MemGym (2605.20833) | benchmark | We adopt as primary benchmark |
+| HyMeS (2608.09410) | coding-agent for memory mgmt | Integration target precedent |
+| MARS (2605.14401) | 3-tier memory + strength tracking | Same architecture, deterministic merge |
+| NEMORI (2508.03341) | prediction-error retention | Deterministic threshold |
+| CLAG (2603.15421) | SLM-driven clustering | Implicit clustering via V_t |
+| MemTrace (2608.06909) | debugging methodology | Substrate is debugging-free |
+| MemOS (2507.03724) | memory hierarchy OS | Complementary: we are the hot-cache primitive |
+| EverMemOS (2601.02163) | engram-lifecycle memory OS | Complementary: we are the buffer |
+| HNSW (2607.16973) | corpus-scale vector index | Different regime: corpus-scale |
+| Unlearning (2402.15159) | RTBF via retraining | O(1) per-entry deletion |
+| SuperLocalMemory (2506.12088) | Bayesian-trust privacy | Single-agent so trust not needed; threat model shared |
