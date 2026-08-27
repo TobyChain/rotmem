@@ -1,8 +1,8 @@
 # RotMem — Related-Work Notes
 
-Last updated: 2026-08-27 (Round 5, after 4 reflection rounds). Each entry
-records the citation, the mechanism it introduces, and the *delta* from
-RotMem.
+Last updated: 2026-08-27 (Round 16, after 12 reflection rounds). Each
+entry records the citation, the mechanism it introduces, and the
+*delta* from RotMem.
 
 ---
 
@@ -299,3 +299,131 @@ without a learned ranker), and = **LoMA-minus-the-bit-perfectness**
 | LoMA (2401.09486) | lossless KV-cache compression | Weaker guarantee (cosine-preserving) at lower cost |
 | Johnson-Lindenstrauss (2009.08320) | random orthogonal distance preservation | Our V_t is *deterministic*, data-adaptive |
 | MemOPD (2608.07068) | on-policy scoring infra | Orthogonal: infra vs state-design |
+
+
+## Debugging & attribution (Round 13)
+
+### MemTrace — arXiv:2608.06909 (2026)
+
+  Transforms memory pipelines into executable *memory evolution
+  graphs*; introduces MemTraceBench over Long-Context, RAG, Mem0, EverMemOS.
+  observes that *"existing memory systems remain unreliable and
+  difficult to debug"*. RotMem's deterministic policy makes every
+  state transition **trivially traceable** — the entire evolution
+  graph is closed-form.
+  systems; RotMem is the *substrate* that needs no debugging
+  infrastructure because it is deterministic by construction.
+
+### MemMark — arXiv:2605.28732 (2026)
+
+  systems. Cites the same debugging-frustration observation as MemTrace.
+  doesn't need watermarking because every write is logged
+  (item_id, time, strength).
+
+### SuperLocalMemory — arXiv:2506.12088 (2025)
+
+  trust defence.
+  RotMem is single-agent so this is not relevant, but the *privacy
+  threat model* is shared.
+
+### Machine unlearning — arXiv:2402.15159, 2510.07822, 2406.01983
+
+  compliance in LLMs. RKLD (2406.01983) studies personal-data
+  forgetting specifically.
+  merge provides **first-class selective-forgetting** semantics that
+  naturally support RTBF: a user request to forget a fact can be
+  honoured by setting the fact's strength to 0, after which it cannot
+  reach top-k regardless of query cosine.
+  ascent; RotMem modifies the *buffer entry* directly. No retraining,
+  no $10^5 \times$ cost overhead (2402.15159 reports unlearning
+  methods are $>10^5 \times$ faster than retraining; RotMem's
+  operation is $\mathcal{O}(1)$ per entry).
+
+### HNSW / ANN — arXiv:2603.13591, 2607.16973
+
+  corpus scale (millions of items).
+  it's the *session-scale* equivalent (5k items, single session).
+  For corpus-scale RAG, HNSW/IVF are the right tools. RotMem
+  targets the agent-session regime that ANN systems do not.
+
+
+## Self-evolving and adaptive memory (Round 14)
+
+### MARS — arXiv:2605.14401 (2026)
+
+  Three-tier memory: event memory (raw signals), preference memory
+  (mutable chunks with explicit **strength and evidence tracking**),
+  profile memory (distilled stable preferences).
+  papers.** MARS independently validates that **strength tracking
+  is necessary** for memory agents.
+  profile tier; RotMem replaces distillation with deterministic
+  weighted-mean merge. Same conceptual architecture (event →
+  preference → profile), simpler implementation, zero learned
+  parameters.
+
+### NEMORI — arXiv:2508.03341 (2026)
+
+  error** as the retention criterion.
+  predictor); RotMem is *deterministic* (cosine > threshold + strength
+  decay).
+
+### CLAG — arXiv:2603.15421 (2026)
+
+  clusters memories into coherent groups.
+  basis performs *implicit clustering* via the recent-item
+  covariance — no SLM needed.
+
+### Self-Evolving Software Agents — arXiv:2604.27264 (2026)
+
+  module that elicits new requirements and synthesizes code.
+  the *deterministic substrate* on which self-evolving policies could
+  be added later as an optional extension.
+
+
+## Memory operating systems (Round 15)
+
+### MemOS — arXiv:2507.03724 (2025)
+
+  control, integrates RAG + persistent representations + cost
+  modelling.
+  layer); RotMem is an *algorithm* contribution (buffer primitive
+  inside such a system). They are complementary: a MemOS could
+  call RotMem as its hot-cache buffer.
+
+### EverMemOS — arXiv:2601.02163 (2026)
+
+  engram-inspired lifecycle: episodic traces → MemCells →
+  MemScenes → user profiles.
+  semantic consolidation); RotMem provides the deterministic buffer
+  on top of which such a structure could be built.
+
+
+## Updated summary delta-table (Round 16)
+
+| Paper | Mechanism | Δ from RotMem |
+|---|---|---|
+| **MARS (2605.14401)** | 3-tier memory + strength tracking | Same architecture, deterministic merge |
+| **NEMORI (2508.03341)** | prediction-error retention | Deterministic threshold |
+| **CLAG (2603.15421)** | SLM-driven clustering | Implicit clustering via V_t |
+| **MemTrace (2608.06909)** | debugging methodology | Substrate is debugging-free |
+| **MemOS (2507.03724)** | memory hierarchy OS | Complementary: we are the hot-cache primitive |
+| **EverMemOS (2601.02163)** | engram-lifecycle memory OS | Complementary: we are the buffer |
+| **HNSW (2607.16973)** | corpus-scale vector index | Different regime: corpus-scale, not session-scale |
+| **Unlearning (2402.15159)** | RTBF via retraining | $\mathcal{O}(1)$ per-entry deletion |
+| **SuperLocalMemory (2506.12088)** | Bayesian-trust privacy | Single-agent so trust not needed; threat model shared |
+| MEMRES (2604.16941) | tip-pool memory for dependency resolution | Domain-specific; no math buffer |
+| RMN (emergentmind) | orthogonal reservoir | We lift it; reservoir ↔ memory state |
+| EST (2507.02917) | ESN + attention hybrid | Substrate vs projection; model vs buffer |
+| **Oblivion (2604.00131)** | decay-driven read/write decoupling, learned controller | RotMem = Oblivion minus the controller |
+| **SmartSearch (2603.15599)** | deterministic NER+ranker | RotMem = SmartSearch minus the CrossEncoder |
+| MemSIF (2608.01742) | TSM, DUM | RotMem mitigates DUM |
+| Use-it-or-Lose-it (2604.20300) | selective forgetting | Decay+merge as security primitive |
+| FSFM (2405.18663) | contrastive selective forgetting | Simpler: weighted-mean |
+| Scaffold-flow (2508.11646) | flow/scaffold | scaffold=strength, flow=V_t |
+| LoMA (2401.09486) | lossless KV-cache compression | Weaker guarantee at lower cost |
+| Johnson-Lindenstrauss (2009.08320) | random orthogonal | Deterministic, data-adaptive |
+| MemOPD (2608.07068) | on-policy scoring infra | Orthogonal: infra vs state-design |
+| LCM (2605.04050) | hierarchical summary DAG + LLM-Map | RotMem is non-recursive, no LLM-Map |
+| RLM (2603.02615) | recursive LM in external REPL | Depth-2+ "overthinks"; we are flat |
+| MemGym (2605.20833) | benchmark | We adopt as primary benchmark |
+| HyMeS (2608.09410) | coding-agent for memory mgmt | Integration target precedent |

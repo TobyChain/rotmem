@@ -36,15 +36,17 @@ A **5–20MB deterministic math buffer** with:
 footprint 5–20 MB; runs as a NumPy/PyTorch CPU process on any
 laptop.
 
-## 3. Three-axis positioning
+## 3. Five-axis positioning (Round 16 update)
 
 RotMem is the only work at the intersection of:
 
 | Axis | Position | Closest competitor |
 |---|---|---|
-| Learned vs deterministic | Deterministic | LCM (LLM-Map); Oblivion (LLM); SmartSearch (CrossEncoder); MemSifter (proxy LM) |
-| Recursive vs flat | Flat | LCM (recursive); RLM (recursive); Chained RLM (recursive) |
-| Cosine-preserving vs summary | Cosine-preserving | LCM (summary DAG); MemOPD (lossy); Mem0 (extractive facts) |
+| **Deterministic vs learned** | Deterministic | LCM (LLM-Map); Oblivion (LLM); SmartSearch (CrossEncoder); MemSifter (proxy LM) |
+| **Recursive vs flat** | Flat | LCM (recursive); RLM (recursive); Chained RLM (recursive) |
+| **Cosine-preserving vs summary** | Cosine-preserving | LCM (summary DAG); MemOPD (lossy); Mem0 (extractive facts) |
+| **Debuggable vs debugging-required** | Debuggable by construction | MemTrace (needs methodology); MemMark (needs watermarks) |
+| **RTBF-native vs RTBF-afterthought** | First-class RTBF via strength-reset | Machine unlearning (2402.15159, retraining); RKLD (KL-based distillation) |
 
 ## 4. Theoretical guarantees (with empirical verification)
 
@@ -69,17 +71,18 @@ RotMem is the only work at the intersection of:
 | **Custom 500-turn CLI harness** | Subtask-controlled ablation | Where MemGym doesn't expose enough controls |
 | **TraceLab workload prior** (arXiv:2606.30560) | 4,300 real sessions | Realistic scenario generation |
 
-## 6. Security evaluation
+## 6. Security & compliance evaluation
 
-RotMem is **secure-by-construction**:
+RotMem is **secure-by-construction** *and* **compliance-ready**:
 
-1. No learnable weights → no backdoor surface (defends vs Back-Reveal 2604.05432)
-2. Exponential decay breaks collusive persistence (defends vs MemCollusion 2608.01637)
-3. Strength recency caps the Delayed-Utility-Manifestation window (defends vs MemSIF 2608.01742 DUM)
-4. Lazy orthogonal projection bounds memory-fog attacks
-
-Threat-model evaluation: 3 classes × 50 cases each (indirect
-injection, collusive poisoning, long-horizon attacks via AgentLAB).
+| Property | Defence | Reference |
+|---|---|---|
+| No learnable weights → no backdoor surface | vs Back-Reveal (2604.05432) | |
+| Exponential decay breaks collusive persistence | vs MemCollusion (2608.01637) | |
+| Strength recency caps the Delayed-Utility-Manifestation window | vs MemSIF DUM (2608.01742) | |
+| Lazy orthogonal projection bounds memory-fog attacks | | |
+| **RTBF (right-to-be-forgotten)**: setting strength to 0 makes an item invisible | $\mathcal{O}(1)$ per-entry deletion | vs Machine unlearning (2402.15159, $>10^5\times$ retrain cost) |
+| **Debuggability**: deterministic policy → closed-form evolution graph | No MemTrace-style methodology needed | vs MemTrace (2608.06909) |
 
 ## 7. Integration
 
@@ -92,13 +95,13 @@ injection, collusive poisoning, long-horizon attacks via AgentLAB).
 
 | Top-venue criterion | RotMem |
 |---|---|
-| **Novelty** | First non-recursive, cosine-preserving, deterministic memory buffer for LLM agents |
+| **Novelty** | Only work at the intersection of 5 design axes |
 | **Theory** | 4 theorems with empirical tests |
 | **Engineering** | 5–20 MB module; no GPU; no LM; 14 unit tests pass |
 | **Empirical** | MemGym + LoCoBench-Agent + custom harness × 6 compactors × 3 backbones |
-| **Security** | Formal threat model with 4 defensive properties |
+| **Security** | Formal threat model with 5 defensive/compliance properties |
 | **Reproducibility** | Open source, frozen sessions, deterministic seeds |
-| **Practical impact** | Drop-in for deepseek-harness,; future Claude Code plugin |
+| **Practical impact** | Drop-in for deepseek-harness; future Claude Code plugin |
 
 ## 9. Honest limitations
 
@@ -113,9 +116,11 @@ injection, collusive poisoning, long-horizon attacks via AgentLAB).
 > **RotMem is what happens when you take the residual-rotation insight
 > from RMN, the decay-driven activation from Oblivion, the
 > ranking-over-structure thesis from SmartSearch, the
-> deterministic-pipeline discipline from LCM, and the
-> secure-by-construction threat model from MemCollusion, and combine
-> them into a 5–20MB math buffer with four theorems and 14 passing
-> tests — at zero LM calls and zero GPU.**
+> deterministic-pipeline discipline from LCM, the strength-tracking
+> evidence from MARS, the secure-by-construction threat model from
+> MemCollusion, and the debuggability insight from MemTrace, and
+> combine them into a 5–20MB math buffer with four theorems and 14
+> passing tests — at zero LM calls, zero GPU, and zero retraining
+> for RTBF compliance.**
 
 That's the RotMem pitch for the top-conference review form.

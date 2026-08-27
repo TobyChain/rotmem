@@ -362,3 +362,98 @@
   url    = {https://arxiv.org/abs/2603.18718},
   note   = {MemMA: multi-agent memory coordination framework. Single-agent deterministic buffer in RotMem is a simpler alternative.}
 }
+@article{memtrace2026,
+  title  = {{MemTrace}: Tracing and Attributing Errors in Large Language Model Memory Systems},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.06909},
+  note   = {Memory evolution graphs for debugging. Cited as the strongest framing for RotMem's *naturally-debuggable* property: deterministic policy = trivial trace, no methodology needed.}
+}
+
+@article{memmark2026,
+  title  = {{MemMark}: State-Evolution Attribution Watermarking for Agent Long-Term Memory Systems},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.28732},
+  note   = {Watermarking memory writes for debugging. Cited alongside MemTrace as framing for RotMem's inherent debuggability.}
+}
+
+@article{superlocalmemory2025,
+  title  = {{SuperLocalMemory}: Privacy-Preserving Multi-Agent Memory with Bayesian Trust Defence},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2506.12088},
+  note   = {Privacy-preserving memory for multi-agent systems. Cited as a related privacy threat model; RotMem is single-agent so the trust mechanism is not relevant.}
+}
+
+@article{unlearning2024,
+  title  = {Machine Unlearning of Pre-trained Large Language Models},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2402.15159},
+  note   = {First systematic framework for right-to-be-forgotten in pre-trained LLMs; reports >10^5x speedup over retraining. RotMem's strength-decay + merge provides O(1) per-entry forgetting — natural RTBF compliance at the buffer layer.}
+}
+
+@article{rkld2024,
+  title  = {{RKLD}: Reverse {KL}-Divergence-based Knowledge Distillation for Unlearning Personal Information},
+  author = {Author, et al.},
+  year   = {2024},
+  url    = {https://arxiv.org/abs/2406.01983},
+  note   = {Personal-data forgetting in LLMs. Adopted as the conceptual sibling of my strength-decay mechanism: both serve the RTBF use case, mine is deterministic and O(1).}
+}
+
+@article{mars2026,
+  title  = {{MARS}: Memory-Augmented Agentic Recommender System with Hierarchical Belief-State Memory},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.14401},
+  note   = {Three-tier memory (event, preference, profile) with explicit strength and evidence tracking. Independent validation of strength tracking for memory agents. RotMem = MARS with deterministic merge in place of learned distillation.}
+}
+
+@article{nemori2026,
+  title  = {{NEMORI}: Adaptive Memory Distillation for {LLM} Agents via Prediction Error},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2508.03341},
+  note   = {Uses prediction error as retention criterion (learned). RotMem's deterministic threshold (cosine + strength) is the non-learned counterpart.}
+}
+
+@article{clag2026,
+  title  = {{CLAG}: Adaptive Memory Organization via Agent-Driven Clustering for Small Language Model Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.15421},
+  note   = {SLM-driven clustering memory. RotMem's lazy V_t basis performs implicit clustering without an SLM.}
+}
+
+@article{self_evolving_coding2026,
+  title  = {Self-Evolving Coding Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2604.27264},
+  note   = {BDI-LLM with autonomous evolution module. Cited as the goal direction; RotMem provides a deterministic substrate on which self-evolving policies could be added.}
+}
+
+@article{memos2025,
+  title  = {{MemOS}: A Memory {OS} for {AI} System},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2507.03724},
+  note   = {Memory OS with explicit lifecycle control. Complementary: RotMem is the hot-cache buffer that a Memory OS would call.}
+}
+
+@article{evermemos2026,
+  title  = {{EverMemOS}: A Self-Organizing Memory Operating System for Structured Long-Horizon Reasoning},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2601.02163},
+  note   = {Engram-inspired memory lifecycle: episodic traces → MemCells → MemScenes → profiles. Complementary to RotMem; uses learned structuring on top of a buffer.}
+}
+
+@article{swiftmem2026,
+  title  = {{SwiftMem}: Fast Agentic Memory via Query-aware Indexing},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.13591},
+  note   = {Vector indexing at corpus scale. Different regime: corpus-scale (millions of items) vs. session-scale (5k items).}
+}
