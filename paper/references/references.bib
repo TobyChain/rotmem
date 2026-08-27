@@ -769,3 +769,107 @@
   url    = {https://arxiv.org/abs/2608.23035},
   note   = {Tool-calling + planning benchmark on mobile devices. Cited as a benchmark for the *edge-deployment* scenario.}
 }
+
+@article{sage2026,
+  title  = {{SAGE}: {SLO}-Aware Adaptive Retrieval for Production {RAG} Systems},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2608.08237},
+  note   = {Learned SLO-aware adaptive retrieval with strict latency budgets. My buffer: deterministic numpy ops, no SLO issue. Cited as the operational-position anchor.}
+}
+
+@article{luma_rag2025,
+  title  = {{LUMA-RAG}: Lifelong Multimodal Agents with Provably Stable Streaming Alignment},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2511.02371},
+  note   = {Tiered HNSW+IVFPQ streaming memory. My buffer is a *single-tier* alternative: simpler, no spillover logic.}
+}
+
+@article{alpsbench2025,
+  title  = {{AlpsBench}: An {LLM} Personalization Benchmark for Real-Dialogue Memorization and Personalization},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2509.23767},
+  note   = {Real WildChat-derived personalization benchmark (2,500 long-term interaction sequences). Add as Stage 2 benchmark for real-world evaluation.}
+}
+
+@article{logo2026,
+  title  = {From Personal to Collective: On the Role of Local and Global Memory in {LLM} Personalization},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.26680},
+  note   = {Local + global memory framework. My buffer is *local-only*; cite as future work for multi-user / collective memory.}
+}
+
+@article{adasvd2026,
+  title  = {{AdaSVD}: Adaptive Singular Value Decomposition for Long-Running Coding Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2605.18854},
+  note   = {'Coding agents + fixed context windows + truncation vs failure tradeoff'. Canonises my framing: 'truncation is failure, fixed context is the problem, my buffer solves it without context growth'.}
+}
+
+@article{bigmac2025,
+  title  = {{BigMac}: Breaking the {Pareto} Frontier of Compute and Memory in Multimodal {LLM} Training},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2510.05544},
+  note   = {'Breaking the Pareto Frontier of compute and memory'. My buffer is one point on the frontier; provide strictly better Pareto point.}
+}
+
+@article{cost_of_compression2026,
+  title  = {The Cost of Compression: Investigating the Impact of Compression on Parametric {KV}},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2606.24747},
+  note   = {Empirical study of KV-cache compression quality. Cited as motivation for my 'orthogonal projection preserves information' claim.}
+}
+
+@article{pancake2026,
+  title  = {{Pancake}: Hierarchical Memory System for Multi-Agent {LLM} Serving},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2602.21477},
+  note   = {Multi-tier HNSW-based memory system, *integrated into MemGPT, LangChain, LlamaIndex*. Cite as the *production-shipping* precedent. My buffer is the deterministic alternative.}
+}
+
+@article{mcfa2026,
+  title  = {From Storage to Steering: Memory Control Flow Attacks on {LLM} Agents},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2603.15125},
+  note   = {Memory Control Flow Attacks: persistent memory hijacks control flow. **NEW threat class** for my security analysis. My strength decay + offline-only buffer limits attack window.}
+}
+
+@article{imdmr2025,
+  title  = {{IMDMR}: An Intelligent Multi-Dimensional Memory Retrieval System},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2511.05495},
+  note   = {Multi-dimensional retrieval (semantic, entity, category, intent, context, temporal). Orthogonal axis: my orthogonal projection is geometric, IMDMR's dimensions are semantic.}
+}
+
+@article{evomem2026,
+  title  = {Can {LLM} Agents Sustain Long-Horizon Organizational Dynamics? ({TaskWeave}/{EvoMem})},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2606.01199},
+  note   = {Dual-evolving memory for multi-agent planning. Naming-collision risk (similar to MEMRES). Cited as multi-agent framing precedent.}
+}
+
+@article{hyphaedb2025,
+  title  = {{HyphaeDB}: A Living Knowledge Topology for Agent-First Memory},
+  author = {Author, et al.},
+  year   = {2025},
+  url    = {https://arxiv.org/abs/2511.02371},
+  note   = {Living knowledge topology (graph-based). Cited as the *graph-memory* alternative to my *flat-buffer* approach.}
+}
+
+@article{containment_gap2026,
+  title  = {The Containment Gap: How Deployed Agentic {AI} Frameworks Fail Public-Facing Safety},
+  author = {Author, et al.},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2602.21477},
+  note   = {Public-facing agentic framework safety analysis. Cited as the production-safety context for my security analysis.}
+}

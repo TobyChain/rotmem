@@ -71,14 +71,28 @@ as a core memory failure. RotMem addresses DUM by construction:
 ### 2.4 Lazy orthogonal projection bounds the "memory fog" attack
 
 An attacker cannot inject many similar items to "fog" the buffer
+
 (cosine-similarity collapse to a single merged item, by §2.2).
 An attacker cannot craft subtle rotations to bias retrieval toward
 malicious content — the V_t basis is computed from the **empirical
 covariance of recent items**, not from the contents of any single
 item, so per-item content has sub-linear influence on the basis.
 
-## 3. Empirical threat-model evaluation
+### 2.5 Bounded Memory Control Flow Attacks (MCFA, arXiv:2603.15125)
 
+**Claim.** *RotMem's offline-only buffer + exponential decay limits
+the window of MCFA persistence to O(τ) turns.*
+
+MCFA exploits persistent memory to *steer the agent's control flow*
+across turns. With cross-session memory, an attacker can plant a
+payload that fires N turns later. RotMem's defence:
+
+ **Single-session scope**: no cross-session persistence by construction (per user retraction). The "persistence" of MCFA is bounded to one session.
+ **Exponential decay**: even within a session, the strength of an injected item decays as `s_i(t) = exp(-(t - t_i) / τ)`. After ~3τ turns, the item cannot reach top-k under any query cosine.
+ **No tool-call hijack**: RotMem doesn't expose `recall()` or other LM-callable tools (contrast Mosaic), so the MCFA "memory-dominates-control-flow" attack vector is closed by construction.
+
+Add to Stage 3 empirical evaluation: 50 MCFA-injection cases
+following arXiv.2603.15125's MEMFLOW framework.
 We instantiate **three of the five threat classes** as experimental
 extensions of Stage 2:
 

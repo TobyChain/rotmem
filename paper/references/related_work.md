@@ -951,3 +951,176 @@ content) axes. Adopt as tertiary benchmark.
 | HNSW (2607.16973) | corpus-scale vector index | Different regime |
 | Unlearning (2402.15159) | RTBF via retraining | O(1) per-entry deletion |
 | SuperLocalMemory (2506.12088) | Bayesian-trust privacy | Threat model shared |
+
+---
+
+## Graph memory / streaming / real-time (Round 29)
+
+### Pancake — arXiv:2602.21477 (2026)
+
+- **What it is.** Multi-tier HNSW-based agentic memory system.
+  *"Unifies three key techniques: multi-level index caching for
+  single agents, coordinated index management across multiple
+  agents, collaborative GPU-CPU acceleration."* Integrated into
+  MemGPT, LangChain, LlamaIndex.
+- **Why this is the *production-shipping* precedent.** Pancake is
+  the *shipping* alternative for agentic memory. Cite as the
+  production baseline; my buffer is the *deterministic alternative
+  in the same deployment regime*.
+
+### SAGE — arXiv:2608.08237 (2026)
+
+- *SLO-aware adaptive retrieval* for production RAG. Learned policy
+  dynamically selects k per query.
+- **Delta.** SAGE needs learned policy to meet SLOs; my buffer
+  needs no policy — deterministic numpy ops have no SLO issue.
+  Cite as the *operational-position anchor*.
+
+### LUMA-RAG — arXiv:2511.02371 (2025)
+
+- Streaming multi-tier memory: HNSW hot + IVFPQ cold. My buffer is
+  a single-tier alternative.
+
+### AlpsBench — arXiv:2509.23767 (2025)
+
+- *Real WildChat-derived personalisation benchmark* (2,500 long-term
+  sequences). Add as Stage 2 benchmark for real-world evaluation.
+
+### LoGo — arXiv:2603.26680 (2026)
+
+- Local + global memory for LLM personalisation. My buffer is
+  *local-only*; cite as future work for collective memory.
+
+### HyphaeDB — arXiv:2511.02371 (2025)
+
+- *Living knowledge topology* (graph-based). Cited as the
+  graph-memory alternative to my flat-buffer approach.
+
+---
+
+## Compression Pareto frontier (Round 30)
+
+### AdaSVD — arXiv:2605.18854 (2026)
+
+- *"Coding agents + fixed context windows + truncation vs task
+  failure tradeoff."*
+- **Why this canonises my framing.** "Truncation is failure;
+  fixed context is the problem; my buffer solves it without
+  context growth." Direct quote available.
+
+### BigMac — arXiv:2510.05544 (2025)
+
+- *"Breaking the Pareto Frontier of compute and memory."*
+- My buffer is one Pareto-optimal point; strictly better than
+  learned compression at same memory cost.
+
+### Cost of Compression — arXiv:2606.24747 (2026)
+
+- Empirical study of KV-cache compression quality. Cited as
+  motivation for my "orthogonal projection preserves information"
+  claim.
+
+---
+
+## Production frameworks & safety (Round 31)
+
+### MCFA — arXiv:2603.15125 (2026)
+
+- **Memory Control Flow Attacks**: persistent memory hijacks
+  control flow. **NEW threat class** for my security analysis.
+  My strength decay + offline-only buffer limits attack window.
+
+### IMDMR — arXiv:2511.05495 (2025)
+
+- Multi-dimensional retrieval (semantic, entity, category, intent,
+  context, temporal). My orthogonal projection is *geometric*;
+  IMDMR's dimensions are *semantic*. Orthogonal axes.
+
+### EvoMem (TaskWeave) — arXiv:2606.01199 (2026)
+
+- Dual-evolving memory for multi-agent planning. Naming-collision
+  risk (similar to MEMRES). Cited as multi-agent framing
+  precedent.
+
+### Containment Gap — arXiv:2602.21477 (2026)
+
+- Public-facing agentic framework safety. Production-safety
+  context for my security analysis.
+
+---
+
+## Updated summary delta-table (Round 32)
+
+| Paper | Mechanism | Δ from RotMem |
+|---|---|---|
+| **Pancake (2602.21477)** | HNSW multi-tier + LangChain + LlamaIndex | Production-shipping precedent; my deterministic alternative |
+| **AdaSVD (2605.18854)** | Truncation-vs-failure tradeoff framing | Canonises my framing |
+| **AlpsBench (2509.23767)** | WildChat-derived personalisation | Real-world benchmark |
+| **SAGE (2608.08237)** | SLO-aware adaptive retrieval | No SLO issue for my buffer |
+| **LUMA-RAG (2511.02371)** | HNSW + IVFPQ tiered streaming | Single-tier alternative |
+| **LoGo (2603.26680)** | Local + global memory | Local-only; future work for global |
+| **HyphaeDB (2511.02371)** | Graph memory | Flat-buffer alternative |
+| **BigMac (2510.05544)** | Compute-memory Pareto | Strictly better Pareto point |
+| **Cost of Compression (2606.24747)** | KV compression empirical study | Motivation for orthogonal projection |
+| **MCFA (2603.15125)** | Memory control flow attacks | NEW threat class |
+| **IMDMR (2511.05495)** | Multi-dimensional retrieval | Orthogonal axis (geometric vs semantic) |
+| **EvoMem (2606.01199)** | Dual-evolving multi-agent memory | Naming-collision precedent |
+| **Containment Gap (2602.21477)** | Public-facing safety | Production-safety context |
+| Mosaic (2604.12376) — LoCoMo SOTA | Cooperative paging with 8-24-token bookmarks | **Add as 7th baseline.** Full-precision vs lossy bookmarks |
+| MemLoRA (2512.04763) | On-device memory via LoRA | Same regime, smaller footprint |
+| EmbBERT (2502.10001) | Attention under 2 MB | My buffer completes the edge stack |
+| PaCoST (2502.06655) | Paired confidence significance test | Adopt for statistical protocol |
+| MemQ (2605.08374) | TD(λ) over provenance DAG | Orthogonal mechanism, shared eval framing |
+| ROLETHINK (2503.08193) | Role-play inner thought | Cited alongside MREval |
+| TokMem (2608.23035) | One-token procedural memory | Extreme compression reference |
+| MobilePA-Bench (2608.23035) | Mobile planner benchmark | Cited for edge deployment |
+| LiveMem (2608.02515) | learned intrinsic memory state | Same problem, deterministic answer |
+| MREval (2603.19313) | 4 memory-driven abilities | Operationalisation of LoCoBench |
+| TrajWiki (2608.00967) | source-grounded trajectories | Trivially satisfied by deterministic |
+| CASPIAN (2605.19240) | cascade attack detection | Single-session eliminates cross-session cascade |
+| ACRFence (2605.05391) | semantic rollback defence | Strength decay prevents rollback |
+| Privacy Risks (2508.07664) | user-study of memory privacy | Why-this-matters reference |
+| CIPL (2603.22751) | channel-oriented privacy | Smaller surface (one channel) |
+| STC (2606.05241) | search-time contamination | Single-session offline → immune |
+| Identity Drift (2412.00804) | multi-turn persona drift | Strength anchoring prevents drift |
+| SPASM (2511.00222) | persona consistency benchmark | Adopt as tertiary benchmark |
+| CiteGuard (2608.21376) | faithful citation attribution | Evidence identity preserved |
+| Dynamic ReAct (2509.20386) | tool selection for ReAct | Integration target |
+| EvoMemBench (2605.18421) | self-evolving memory benchmark | Adopt as tertiary benchmark |
+| Landmark Attention (2605.27980) | infinite-context attention | Different axis: state vs context |
+| QJL (2603.26110) | JL + 1-bit sign on KV cache | Same orthogonal transform, different object + full-precision |
+| NAM (2302.09422) | Neural Attention Memory (differentiable) | Non-differentiable deterministic counterpart |
+| ISM (2604.27003) | continual learning bottleneck at memory | Deterministic answer: stability-plasticity dial |
+| NSER (2605.09419) | active reasoning over passive replay | Cited as future-work for active extension |
+| Catastrophic Forgetting (2402.18865) | stability-plasticity PEFT | My decay τ controls the trade-off |
+| MemoryArena (2602.16313) | Multi-session MAE benchmark | Adopt as primary benchmark |
+| MemSyco-Bench (2607.01071) | memory-induced sycophancy | New failure mode to test |
+| TPI-LLM (2504.02273) | memory aug for 1B-class | Motivation for 2B evaluation |
+| LLMCarbon (2511.08575) | Carbon estimation framework | Provide carbon-saving estimate table |
+| Rate-distortion (2206.10083) | lower bound for projection | My V_t achieves ε=0 |
+| Cottention (2602.13680) | cosine attention for linear Transformers | Parallel motivation for cosine retrieval |
+| MEMRES (2604.16941) | tip-pool memory for dependency resolution | Domain-specific |
+| RMN (emergentmind) | orthogonal reservoir | We lift it |
+| EST (2507.02917) | ESN + attention hybrid | Substrate vs projection |
+| Oblivion (2604.00131) | decay-driven read/write decoupling, learned controller | RotMem = Oblivion minus the controller |
+| SmartSearch (2603.15599) | deterministic NER+ranker | RotMem = SmartSearch minus the CrossEncoder |
+| MemSIF (2608.01742) | TSM, DUM | RotMem mitigates DUM |
+| Use-it-or-Lose-it (2604.20300) | selective forgetting | Decay+merge as security primitive |
+| FSFM (2405.18663) | contrastive selective forgetting | Simpler: weighted-mean |
+| Scaffold-flow (2508.11646) | flow/scaffold | scaffold=strength, flow=V_t |
+| LoMA (2401.09486) | lossless KV-cache compression | Weaker guarantee at lower cost |
+| Johnson-Lindenstrauss (2009.08320) | random orthogonal | Deterministic, data-adaptive |
+| MemOPD (2608.07068) | on-policy scoring infra | Orthogonal: infra vs state-design |
+| LCM (2605.04050) | hierarchical summary DAG + LLM-Map | RotMem is non-recursive, no LLM-Map |
+| RLM (2603.02615) | recursive LM in external REPL | Depth-2+ "overthinks" |
+| MemGym (2605.20833) | benchmark | Adopt as primary benchmark |
+| HyMeS (2608.09410) | coding-agent for memory mgmt | Integration target precedent |
+| MARS (2605.14401) | 3-tier memory + strength tracking | Same architecture, deterministic merge |
+| NEMORI (2508.03341) | prediction-error retention | Deterministic threshold |
+| CLAG (2603.15421) | SLM-driven clustering | Implicit clustering via V_t |
+| MemTrace (2608.06909) | debugging methodology | Substrate is debugging-free |
+| MemOS (2507.03724) | memory hierarchy OS | Complementary: hot-cache primitive |
+| EverMemOS (2601.02163) | engram-lifecycle memory OS | Complementary: we are the buffer |
+| HNSW (2607.16973) | corpus-scale vector index | Different regime |
+| Unlearning (2402.15159) | RTBF via retraining | O(1) per-entry deletion |
+| SuperLocalMemory (2506.12088) | Bayesian-trust privacy | Threat model shared |

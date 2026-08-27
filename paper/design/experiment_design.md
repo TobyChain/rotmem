@@ -139,7 +139,17 @@ provides the *human-craft* test scenario that complements
 MemGym's synthetic tasks.
 
 ### MemSyco-Bench (arXiv:2607.01071) — sycophancy robustness test
+### Quinary benchmark: AlpsBench (arXiv:2509.23767) — real-world personalisation
 
+Real WildChat-derived personalisation benchmark (2,500 long-term
+sequences). Add as quinary benchmark for real-world evaluation; the
+data is genuinely human-LLM dialogue, not synthetic.
+
+### Pancake (arXiv:2602.21477) — production-shipped integration target
+
+Multi-tier HNSW memory system *integrated into MemGPT, LangChain,
+LlamaIndex*. Adopted as the *integration target*: my buffer ships as
+the deterministic alternative in the same deployment regime.
 Robustness test (50 sycophancy-injection cases): measure whether
 high-strength retrievals bias the LLM toward user-aligned (rather
 than factually correct) answers. Predicted: RotMem's deterministic
